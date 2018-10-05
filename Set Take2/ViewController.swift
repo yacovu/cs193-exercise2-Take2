@@ -27,6 +27,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func dealNewCardsClick(_ sender: UIButton) {
+        dealNewCards()
+        changeButtonsToNotSelected()
     }
     
     @IBAction func hintClick(_ sender: UIButton) {
@@ -124,6 +126,8 @@ class ViewController: UIViewController {
         if selectedButtons.count == 3 {
             checkIfButtonsAreSet(buttonToAdd: button)
         }
+        updateLabelsUI()
+
     }
     
     func removeButtonFromSelectedButtons(selectedButton buttonToRemove: UIButton) {
@@ -166,7 +170,7 @@ class ViewController: UIViewController {
                 changeButtonsToNotSet()
                 selectedButtons.removeAll()
             }
-            updateLabelsUI()
+//            updateLabelsUI()
         }
     }
     

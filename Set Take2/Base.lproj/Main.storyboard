@@ -41,13 +41,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player's Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bN5-94-UaN">
-                                <rect key="frame" x="16" y="757.66666666666663" width="128" height="20.333333333333371"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cards in Deck: 69" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MdA-7Z-C0X">
-                                <rect key="frame" x="222.33333333333337" y="757.66666666666663" width="136.66666666666663" height="20.333333333333371"/>
+                                <rect key="frame" x="16.000000000000007" y="757.66666666666663" width="127.66666666666669" height="20.333333333333371"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -279,6 +273,12 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cards in Deck: 69" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MdA-7Z-C0X">
+                                <rect key="frame" x="221.66666666666669" y="757.66666666666663" width="136.66666666666669" height="20.333333333333371"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -287,7 +287,7 @@
                             <constraint firstItem="kCZ-IC-vYb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="5yN-Di-Qlf"/>
                             <constraint firstItem="WkO-xR-yo8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="19" id="8Ng-Te-sGa"/>
                             <constraint firstItem="slV-ts-IBX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="19" id="ImC-QR-2SY"/>
-                            <constraint firstItem="MdA-7Z-C0X" firstAttribute="leading" secondItem="bN5-94-UaN" secondAttribute="trailing" constant="78" id="Qke-rv-ETa"/>
+                            <constraint firstItem="MdA-7Z-C0X" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="bN5-94-UaN" secondAttribute="trailing" constant="60" id="Qke-rv-ETa"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="MdA-7Z-C0X" secondAttribute="bottom" id="SXK-1B-4mW"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="slV-ts-IBX" secondAttribute="trailing" constant="38" id="XS6-CV-vZW"/>
                             <constraint firstItem="slV-ts-IBX" firstAttribute="leading" secondItem="WkO-xR-yo8" secondAttribute="trailing" constant="46" id="boq-fQ-GUc"/>
