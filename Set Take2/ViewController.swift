@@ -30,6 +30,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func hintClick(_ sender: UIButton) {
+        getAHint()
     }
     
     @IBAction func newGameClick(_ sender: UIButton) {
@@ -50,6 +51,7 @@ class ViewController: UIViewController {
     private(set) var numberOfShapes = [1,2,3]
     lazy private(set) var shapes = ["diamond", "square", "circle"]
     private var selectedButtons = [UIButton]()
+    private var needToDealNewCards = false
     
     let blankDiamond = NSAttributedString(string: "\u{25CA}")
     private let blankSquare = NSAttributedString(string: "\u{25A2}")
@@ -104,6 +106,11 @@ class ViewController: UIViewController {
     }
     
     func touchButton(touchedButton button: UIButton) {
+        if self.needToDealNewCards {
+            dealNewCards()
+            self.needToDealNewCards = false
+            selectedButtons.removeAll()
+        }
         if self.selectedButtons.count == 0 {
             changeButtonsToNotSelected()
         }
@@ -120,9 +127,11 @@ class ViewController: UIViewController {
     }
     
     func removeButtonFromSelectedButtons(selectedButton buttonToRemove: UIButton) {
-        for buttonIndex in 0..<self.selectedButtons.count {
+        var found = false
+        for buttonIndex in 0..<self.selectedButtons.count where !found{
             if self.selectedButtons[buttonIndex] == buttonToRemove {
                 self.selectedButtons.remove(at: buttonIndex)
+                found = true
             }
         }
     }
@@ -147,20 +156,74 @@ class ViewController: UIViewController {
             let thirdCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[2])
             if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
                 
-                changeButtonsToSet()
+                changeButtonsToLegalSet()
                 changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
+                removeSetFromGameBoard()
+                self.needToDealNewCards = true
+                game.scorePlayer += 3
             }
             else {
                 changeButtonsToNotSet()
+                selectedButtons.removeAll()
             }
-            selectedButtons.removeAll()
+            updateLabelsUI()
         }
     }
     
-    func changeButtonsToSet() {
+    func updateLabelsUI() {
+        playerScoreLabel.text = "Player's Score: \(game.scorePlayer)"
+        cardsInDeckLabel.text = "Cards in Deck: \(game.deck.count)"
+    }
+    
+    func removeSetFromGameBoard() {
+        for button in selectedButtons {
+            game.removeCardFromGameBoard(cardIndex: getCardIndexInGameBoardArray(fromButtonElement: button))
+        }
+    }
+    
+    func dealNewCards() {
+        if game.deck.count >= 3 {
+            let newCardsIdentifiers =  game.dealThreeNewCards()
+            for selectedButtonIndex in 0..<self.selectedButtons.count {
+                for buttonIndex in 0..<self.buttons.count {
+                    if self.buttons[buttonIndex].tag == selectedButtons[selectedButtonIndex].tag {
+                        connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIdentifiers[selectedButtonIndex]], buttonToConnect: self.buttons[buttonIndex])
+                    }
+                }
+            }
+        }
+    }
+    
+    func getAHint() {
+        var found = false
+        
+        for firstCardIndex in 0..<game.cardsOnGameBoard.count where !found {
+            for secondCardIndex in 0..<game.cardsOnGameBoard.count where !found {
+                for thirdCardIndex in 0..<game.cardsOnGameBoard.count where !found {
+                    if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
+                        let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[firstCardIndex])
+                        let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[secondCardIndex])
+                        let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[thirdCardIndex])
+                        changeToSetLayout(buttonToChange: self.buttons[firstButtonIndex])
+                        changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
+                        changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])
+                        found = true
+                    }
+                }
+            }
+        }
+    }
+    
+    func changeToSetLayout(buttonToChange button: UIButton) {
+        button.layer.borderWidth = 3.0
+        button.layer.borderColor = UIColor.orange.cgColor
+        button.layer.cornerRadius = 8.0
+    }
+    
+    func changeButtonsToLegalSet() {
         for button in selectedButtons {
             button.layer.borderWidth = 3.0
-            button.layer.borderColor = UIColor.orange.cgColor
+            button.layer.borderColor = UIColor.green.cgColor
             button.layer.cornerRadius = 8.0
         }
     }
@@ -187,14 +250,19 @@ class ViewController: UIViewController {
         game.cardsOnGameBoard[thirdIndex].isMatched = true
     }
     
-//    func addToSelectedCards(buttonToAdd button: UIButton) {
-//        game.selectedCards.append(game.cardsOnGameBoard[getCardIndexInGameBoardArray(fromButtonElement: button)!])
-//    }
-    
     func getCardIndexInGameBoardArray(fromButtonElement button: UIButton) -> Int {
         for cardIndex in 0..<game.cardsOnGameBoard.count {
             if game.cardsOnGameBoard[cardIndex].identifier == button.tag {
                 return cardIndex
+            }
+        }
+        return -1
+    }
+    
+    func getButtonIndexInButtonsArray(fromCardElement card: Card) -> Int {
+        for buttonIndex in 0..<self.buttons.count {
+            if self.buttons[buttonIndex].tag == card.identifier {
+                return buttonIndex
             }
         }
         return -1

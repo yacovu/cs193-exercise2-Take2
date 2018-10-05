@@ -88,7 +88,6 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                 <connections>
                                                     <action selector="buttonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="y2g-2G-TZF"/>
-                                                    <action selector="hintClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ia0-lO-EOp"/>
                                                 </connections>
                                             </button>
                                         </subviews>

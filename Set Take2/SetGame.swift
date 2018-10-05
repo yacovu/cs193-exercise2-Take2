@@ -21,10 +21,18 @@ class SetGame {
     private let numOfColors = 3
     private let numOfFillings = 3
     private let numOfShapesQuantity = 3
+    var scorePlayer = 0
     lazy private var deckCapacity = numOfShapes * numOfColors * numOfFillings * numOfShapesQuantity
     
-    func dealThreeNewCards() {
+    func dealThreeNewCards() -> [Int] {
+        var newCardsIndexes = [Int]()
         
+        for _ in 1...3 {
+//            newCardsIdentifiers.append(deck.last!.identifier)
+            self.cardsOnGameBoard.append(deck.popLast()!)
+            newCardsIndexes.append(self.cardsOnGameBoard.count - 1) //check if it adds always to the end of the array
+        }
+        return newCardsIndexes
     }
     
     func tryToMatchCards(firstElement firstCard: Card, secondElement secondCard: Card, thirdElement thirdCard: Card) {
@@ -60,6 +68,7 @@ class SetGame {
     
     func isASet(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
         return !(firstcard.isMatched && secondcard.isMatched && thirdcard.isMatched)
+            && (firstcard.identifier != secondcard.identifier && secondcard.identifier != thirdcard.identifier && firstcard.identifier != thirdcard.identifier)
             && (haveSameNumberOfShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentNumberOfShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
             && (haveSameShape(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
             && (haveSameFilling(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentFillings(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
@@ -98,13 +107,14 @@ class SetGame {
         return firstcard.color != secondcard.color && secondcard.color != thirdcard.color && firstcard.color != thirdcard.color
     }
     
+    func removeCardFromGameBoard(cardIndex index: Int) {
+        self.cardsOnGameBoard.remove(at: index)
+    }
+    
     
     init() {
         initDeck()
         shuffleDeck()
         initGameBoard()
-    }
-    
-    
-    
+    }    
 }
