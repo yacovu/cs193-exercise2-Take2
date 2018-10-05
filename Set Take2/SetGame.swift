@@ -16,6 +16,7 @@ class SetGame {
     var selectedCards = [Card]()
     var alreadyMatchedCards = [Card]()
     private let numOfCardsOnStart = 12
+    private(set) var maxNumOfCards = 24
     private let numOfShapes = 3
     private let numOfColors = 3
     private let numOfFillings = 3
@@ -56,6 +57,47 @@ class SetGame {
             cardsOnGameBoard.append(deck.popLast()!)
         }
     }
+    
+    func isASet(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return !(firstcard.isMatched && secondcard.isMatched && thirdcard.isMatched)
+            && (haveSameNumberOfShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentNumberOfShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
+            && (haveSameShape(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
+            && (haveSameFilling(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentFillings(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
+            && (haveSameColor(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentColors(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
+    }
+    
+    func haveSameNumberOfShapes(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.numOfShapes == secondcard.numOfShapes && secondcard.numOfShapes == thirdcard.numOfShapes
+    }
+    
+    func haveThreeDifferentNumberOfShapes(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.numOfShapes != secondcard.numOfShapes && secondcard.numOfShapes != thirdcard.numOfShapes && firstcard.numOfShapes != thirdcard.numOfShapes
+    }
+    
+    func haveSameShape(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.shape == secondcard.shape && secondcard.shape == thirdcard.shape
+    }
+    
+    func haveThreeDifferentShapes(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.shape != secondcard.shape && secondcard.shape != thirdcard.shape && firstcard.shape != thirdcard.shape
+    }
+    
+    func haveSameFilling(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.filling == secondcard.filling && secondcard.filling == thirdcard.filling
+    }
+    
+    func haveThreeDifferentFillings(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.filling != secondcard.filling && secondcard.filling != thirdcard.filling && firstcard.filling != thirdcard.filling
+    }
+    
+    func haveSameColor(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.color == secondcard.color && secondcard.color == thirdcard.color
+    }
+    
+    func haveThreeDifferentColors(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
+        return firstcard.color != secondcard.color && secondcard.color != thirdcard.color && firstcard.color != thirdcard.color
+    }
+    
     
     init() {
         initDeck()
