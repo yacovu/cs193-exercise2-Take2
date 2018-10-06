@@ -302,6 +302,7 @@
                     </view>
                     <connections>
                         <outlet property="cardsInDeckLabel" destination="MdA-7Z-C0X" id="laC-KM-D8l"/>
+                        <outlet property="dealNewCardsButton" destination="jg2-dB-Ihl" id="L48-c8-6W7"/>
                         <outlet property="playerScoreLabel" destination="bN5-94-UaN" id="yF7-Fh-3Xk"/>
                         <outletCollection property="buttons" destination="Jew-LR-PvD" collectionClass="NSMutableArray" id="snK-s2-cJx"/>
                         <outletCollection property="buttons" destination="Kvw-40-1CP" collectionClass="NSMutableArray" id="aco-Ay-i6H"/>

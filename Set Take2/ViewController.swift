@@ -26,16 +26,20 @@ class ViewController: UIViewController {
         
     }
     
+    @IBOutlet weak var dealNewCardsButton: UIButton!
+    
     @IBAction func dealNewCardsClick(_ sender: UIButton) {
         dealNewCards()
         changeButtonsToNotSelected()
     }
     
     @IBAction func hintClick(_ sender: UIButton) {
+        selectedButtons.removeAll()
         getAHint()
     }
     
     @IBAction func newGameClick(_ sender: UIButton) {
+        startNewGame()
     }
     
     @IBOutlet weak var playerScoreLabel: UILabel!
@@ -54,7 +58,7 @@ class ViewController: UIViewController {
     lazy private(set) var shapes = ["diamond", "square", "circle"]
     private var selectedButtons = [UIButton]()
     private var needToDealNewCards = false
-    
+    private var freeButtonIndex = 12
     let blankDiamond = NSAttributedString(string: "\u{25CA}")
     private let blankSquare = NSAttributedString(string: "\u{25A2}")
     private let blankCircle = NSAttributedString(string: "\u{25EF}")
@@ -74,6 +78,10 @@ class ViewController: UIViewController {
     lazy var colornameToUIColor = ["red": UIColor.red, "green": UIColor.green, "blue": UIColor.blue]
     
     let game = SetGame()
+    
+    func startNewGame(){
+        
+    }
     
     func initBoard() {
         disableAllButtons()
@@ -110,8 +118,6 @@ class ViewController: UIViewController {
     func touchButton(touchedButton button: UIButton) {
         if self.needToDealNewCards {
             dealNewCards()
-            self.needToDealNewCards = false
-            selectedButtons.removeAll()
         }
         if self.selectedButtons.count == 0 {
             changeButtonsToNotSelected()
@@ -124,10 +130,11 @@ class ViewController: UIViewController {
             self.selectedButtons.append(button)
         }
         if selectedButtons.count == 3 {
+            dealNewCardsButton.isEnabled = true
             checkIfButtonsAreSet(buttonToAdd: button)
+            selectedButtons.removeAll()
         }
         updateLabelsUI()
-
     }
     
     func removeButtonFromSelectedButtons(selectedButton buttonToRemove: UIButton) {
@@ -162,15 +169,16 @@ class ViewController: UIViewController {
                 
                 changeButtonsToLegalSet()
                 changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
-                removeSetFromGameBoard()
+//                removeSetFromGameBoard()
                 self.needToDealNewCards = true
+                dealNewCardsButton.isEnabled = true
                 game.scorePlayer += 3
             }
             else {
                 changeButtonsToNotSet()
-                selectedButtons.removeAll()
+                //removed
+//                selectedButtons.removeAll()
             }
-//            updateLabelsUI()
         }
     }
     
@@ -180,22 +188,74 @@ class ViewController: UIViewController {
     }
     
     func removeSetFromGameBoard() {
-        for button in selectedButtons {
-            game.removeCardFromGameBoard(cardIndex: getCardIndexInGameBoardArray(fromButtonElement: button))
+        var indexesToRemove = [Int]()
+        for cardIndex in 0..<game.cardsOnGameBoard.count {
+            if game.cardsOnGameBoard[cardIndex].isMatched {
+                indexesToRemove.append(cardIndex)
+            }
         }
+        game.removeCardFromGameBoard(cardIndex: indexesToRemove[0])
+        game.removeCardFromGameBoard(cardIndex: indexesToRemove[1] - 1)
+        game.removeCardFromGameBoard(cardIndex: indexesToRemove[2] - 2)
     }
     
     func dealNewCards() {
         if game.deck.count >= 3 {
-            let newCardsIdentifiers =  game.dealThreeNewCards()
-            for selectedButtonIndex in 0..<self.selectedButtons.count {
-                for buttonIndex in 0..<self.buttons.count {
-                    if self.buttons[buttonIndex].tag == selectedButtons[selectedButtonIndex].tag {
-                        connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIdentifiers[selectedButtonIndex]], buttonToConnect: self.buttons[buttonIndex])
-                    }
+            if getMatchedButtonsFromMatchedCards().count == 3 {
+                replaceSelectedCards(matchedCards: getMatchedButtonsFromMatchedCards())
+            }
+            else {
+                dealCardsToNewButtons()
+            }
+        }
+        else {
+            self.dealNewCardsButton.isEnabled = false
+        }
+    }
+    
+    func getMatchedButtonsFromMatchedCards() -> [Int] {
+        var matchedCardsIndexes = [Int]()
+        for cardIndex in 0..<game.cardsOnGameBoard.count {
+            if game.cardsOnGameBoard[cardIndex].isMatched {
+                matchedCardsIndexes.append(cardIndex)
+            }
+        }
+        return matchedCardsIndexes
+    }
+    
+    func dealCardsToNewButtons() {
+        if freeButtonIndex < 24 {
+            let newCardsIndexesInGameBoard =  game.dealThreeNewCards()
+            for index in 0..<3 {
+                connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIndexesInGameBoard[index]], buttonToConnect: self.buttons[self.freeButtonIndex])
+                freeButtonIndex += 1
+            }
+        }
+    }
+    
+    func replaceSelectedCards(matchedCards matchIndexes: [Int]) {
+        let newCardsIndexesInGameBoard =  game.dealThreeNewCards()
+        
+        /////////////////////////////////////////
+        for cardIndex in 0..<matchIndexes.count {
+            for buttonIndex in 0..<self.buttons.count {
+                if self.buttons[buttonIndex].tag == game.cardsOnGameBoard[matchIndexes[cardIndex]].identifier {
+                    connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIndexesInGameBoard[cardIndex]], buttonToConnect: self.buttons[buttonIndex])
                 }
             }
         }
+
+//        for selectedButtonIndex in 0..<self.selectedButtons.count {
+//            for buttonIndex in 0..<self.buttons.count {
+//                if self.buttons[buttonIndex].tag == selectedButtons[selectedButtonIndex].tag {
+//                    connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIndexesInGameBoard[selectedButtonIndex]], buttonToConnect: self.buttons[buttonIndex])
+//                }
+//            }
+//        }
+        self.needToDealNewCards = false
+        removeSetFromGameBoard()
+        //removed
+//        selectedButtons.removeAll()
     }
     
     func getAHint() {
@@ -208,6 +268,9 @@ class ViewController: UIViewController {
                         let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[firstCardIndex])
                         let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[secondCardIndex])
                         let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[thirdCardIndex])
+                        print(firstButtonIndex)
+                        print(secondButtonIndex)
+                        print(thirdButtonIndex)
                         changeToSetLayout(buttonToChange: self.buttons[firstButtonIndex])
                         changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
                         changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])
