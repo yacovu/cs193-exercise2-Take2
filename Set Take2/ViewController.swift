@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     
     @IBAction func hintClick(_ sender: UIButton) {
         selectedButtons.removeAll()
-        getAHint()
+        showHintOnGameBoard()
     }
     
     @IBAction func newGameClick(_ sender: UIButton) {
@@ -130,11 +130,44 @@ class ViewController: UIViewController {
             self.selectedButtons.append(button)
         }
         if selectedButtons.count == 3 {
-            dealNewCardsButton.isEnabled = true
-            checkIfButtonsAreSet(buttonToAdd: button)
-            selectedButtons.removeAll()
+           handleThreeButtonsWereSelected(touchedButton: button)
         }
         updateLabelsUI()
+    }
+    
+    func handleThreeButtonsWereSelected(touchedButton button: UIButton) {
+        if game.deck.count >= 3 {
+            dealNewCardsButton.isEnabled = true
+            checkIfButtonsAreSet(buttonToAdd: button)
+        }
+        else {
+            removeSelectedButtonsFromUI()
+            removeCardsFromGameBoard()
+        }
+        selectedButtons.removeAll()
+        checkIfNeedToEndGame()
+    }
+    
+    func checkIfNeedToEndGame() {
+        if game.cardsOnGameBoard.count == 0 || (getALegalSet().count == 0 && game.deck.count == 0) {
+            gameOver()
+        }
+    }
+    
+    func removeCardsFromGameBoard() {
+        for button in self.selectedButtons {
+            game.cardsOnGameBoard.remove(at: getCardIndexInGameBoardArray(fromButtonElement: button))
+        }
+    }
+    
+    func removeSelectedButtonsFromUI() {
+        for button in self.selectedButtons {
+            button.setAttributedTitle(NSAttributedString(string: ""), for: UIControlState.normal)
+            button.layer.borderWidth = 0
+            button.layer.backgroundColor = UIColor.clear.cgColor
+            button.layer.cornerRadius = 0
+            button.isEnabled = false
+        }
     }
     
     func removeButtonFromSelectedButtons(selectedButton buttonToRemove: UIButton) {
@@ -169,15 +202,12 @@ class ViewController: UIViewController {
                 
                 changeButtonsToLegalSet()
                 changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
-//                removeSetFromGameBoard()
                 self.needToDealNewCards = true
                 dealNewCardsButton.isEnabled = true
                 game.scorePlayer += 3
             }
             else {
                 changeButtonsToNotSet()
-                //removed
-//                selectedButtons.removeAll()
             }
         }
     }
@@ -235,8 +265,6 @@ class ViewController: UIViewController {
     
     func replaceSelectedCards(matchedCards matchIndexes: [Int]) {
         let newCardsIndexesInGameBoard =  game.dealThreeNewCards()
-        
-        /////////////////////////////////////////
         for cardIndex in 0..<matchIndexes.count {
             for buttonIndex in 0..<self.buttons.count {
                 if self.buttons[buttonIndex].tag == game.cardsOnGameBoard[matchIndexes[cardIndex]].identifier {
@@ -244,41 +272,45 @@ class ViewController: UIViewController {
                 }
             }
         }
-
-//        for selectedButtonIndex in 0..<self.selectedButtons.count {
-//            for buttonIndex in 0..<self.buttons.count {
-//                if self.buttons[buttonIndex].tag == selectedButtons[selectedButtonIndex].tag {
-//                    connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIndexesInGameBoard[selectedButtonIndex]], buttonToConnect: self.buttons[buttonIndex])
-//                }
-//            }
-//        }
         self.needToDealNewCards = false
         removeSetFromGameBoard()
-        //removed
-//        selectedButtons.removeAll()
     }
     
-    func getAHint() {
+    func getALegalSet() -> [Int] {
         var found = false
+        var setIndexes = [Int]()
         
         for firstCardIndex in 0..<game.cardsOnGameBoard.count where !found {
             for secondCardIndex in 0..<game.cardsOnGameBoard.count where !found {
                 for thirdCardIndex in 0..<game.cardsOnGameBoard.count where !found {
                     if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
-                        let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[firstCardIndex])
-                        let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[secondCardIndex])
-                        let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[thirdCardIndex])
-                        print(firstButtonIndex)
-                        print(secondButtonIndex)
-                        print(thirdButtonIndex)
-                        changeToSetLayout(buttonToChange: self.buttons[firstButtonIndex])
-                        changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
-                        changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])
+                        setIndexes = [firstCardIndex, secondCardIndex, thirdCardIndex]
                         found = true
                     }
                 }
             }
         }
+        return setIndexes
+    }
+    
+    func showHintOnGameBoard() {
+        var setIndexes = getALegalSet()
+        
+        if setIndexes.count == 3 {
+            let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[0]])
+            let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[1]])
+            let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[2]])
+            changeToSetLayout(buttonToChange: self.buttons[firstButtonIndex])
+            changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
+            changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])
+        }
+    }
+    
+    func gameOver() {
+        let alert = UIAlertController(title: "Game Over", message: "No Further Moves!", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Exit", style: UIAlertActionStyle.default, handler: {action in self.game.exitGame()}))
+        alert.addAction(UIAlertAction(title: "New Game", style: UIAlertActionStyle.default, handler: {action in self.startNewGame()}))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func changeToSetLayout(buttonToChange button: UIButton) {

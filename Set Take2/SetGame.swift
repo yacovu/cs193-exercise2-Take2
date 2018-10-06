@@ -111,6 +111,10 @@ class SetGame {
         self.cardsOnGameBoard.remove(at: index)
     }
     
+    func exitGame() {
+        exit(0)
+    }
+    
     
     init() {
         initDeck()
