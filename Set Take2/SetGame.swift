@@ -28,15 +28,10 @@ class SetGame {
         var newCardsIndexes = [Int]()
         
         for _ in 1...3 {
-//            newCardsIdentifiers.append(deck.last!.identifier)
             self.cardsOnGameBoard.append(deck.popLast()!)
             newCardsIndexes.append(self.cardsOnGameBoard.count - 1) //check if it adds always to the end of the array
         }
         return newCardsIndexes
-    }
-    
-    func tryToMatchCards(firstElement firstCard: Card, secondElement secondCard: Card, thirdElement thirdCard: Card) {
-        
     }
     
     func initDeck() {
@@ -115,6 +110,32 @@ class SetGame {
         exit(0)
     }
     
+    func getALegalSet() -> [Int] {
+        var found = false
+        var setIndexes = [Int]()
+        
+        for firstCardIndex in 0..<cardsOnGameBoard.count where !found {
+            for secondCardIndex in 0..<cardsOnGameBoard.count where !found {
+                for thirdCardIndex in 0..<cardsOnGameBoard.count where !found {
+                    if isASet(firstCard: cardsOnGameBoard[firstCardIndex], secondCard: cardsOnGameBoard[secondCardIndex], thirdCard: cardsOnGameBoard[thirdCardIndex]) {
+                        setIndexes = [firstCardIndex, secondCardIndex, thirdCardIndex]
+                        found = true
+                    }
+                }
+            }
+        }
+        return setIndexes
+    }
+    
+    func changeCardsToMatched(firstCardIndex firstIndex: Int, secondCardIndex secondIndex: Int, thirdCardIndex thirdIndex: Int) {
+        cardsOnGameBoard[firstIndex].isMatched = true
+        cardsOnGameBoard[secondIndex].isMatched = true
+        cardsOnGameBoard[thirdIndex].isMatched = true
+    }
+    
+    func needToEndGame() -> Bool {
+        return cardsOnGameBoard.count == 0 || (getALegalSet().count == 0 && deck.count == 0)
+    }
     
     init() {
         initDeck()
