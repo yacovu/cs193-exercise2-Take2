@@ -90,6 +90,7 @@ class ViewController: UIViewController {
         resetButtons()
         selectedButtons.removeAll()
         needToDealNewCards = false
+        self.dealNewCardsButton.isEnabled = true
         freeButtonIndex = 12
         initBoard()
         updateLabelsInUI()
