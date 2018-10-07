@@ -101,9 +101,6 @@ class ViewController: UIViewController {
             self.buttons[buttonIndex].setAttributedTitle(NSAttributedString(string: ""), for: UIControlState.normal)
             self.buttons[buttonIndex].layer.backgroundColor = UIColor.white.cgColor
             self.buttons[buttonIndex].layer.cornerRadius = 0
-            if buttonIndex >= self.freeButtonIndex {
-                self.buttons[buttonIndex].isEnabled = false
-            }
         }
     }
     
