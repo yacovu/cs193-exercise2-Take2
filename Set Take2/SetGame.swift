@@ -61,7 +61,7 @@ class SetGame {
     }
     
     func isASet(firstCard firstcard: Card, secondCard secondcard: Card, thirdCard thirdcard: Card) -> Bool {
-        return !(firstcard.isMatched && secondcard.isMatched && thirdcard.isMatched)
+        return !firstcard.isMatched && !secondcard.isMatched && !thirdcard.isMatched
             && (firstcard.identifier != secondcard.identifier && secondcard.identifier != thirdcard.identifier && firstcard.identifier != thirdcard.identifier)
             && (haveSameNumberOfShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentNumberOfShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))
             && (haveSameShape(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard) || haveThreeDifferentShapes(firstCard: firstcard, secondCard: secondcard, thirdCard: thirdcard))

@@ -295,14 +295,14 @@ class ViewController: UIViewController {
     }
     
     func showHintOnGameBoard() {
-        var setIndexes = game.getALegalSet()
+        var indexesOfSetCards = game.getALegalSet()
         print("--> showHintOnGameBoard")
-        if setIndexes.count == 3 {
-            let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[0]])
-            let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[1]])
-            let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[2]])
+        if indexesOfSetCards.count == 3 {
+            let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[0]])
+            let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[1]])
+            let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[2]])
             
-            print("setIndexes: \(setIndexes)")
+            print("setIndexes: \(indexesOfSetCards)")
             print("firstButtonIndex: \(firstButtonIndex)")
             print("secondButtonIndex: \(secondButtonIndex)")
             print("thirdButtonIndex: \(thirdButtonIndex)")
