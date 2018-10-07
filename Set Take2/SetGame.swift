@@ -43,7 +43,6 @@ class SetGame {
                 }
             }
         }
-        shuffleDeck()
     }
     
     func shuffleDeck() {

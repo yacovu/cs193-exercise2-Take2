@@ -153,13 +153,7 @@ class ViewController: UIViewController {
     }
     
     func handleThreeButtonsSelected(touchedButton button: UIButton) {
-        if game.deck.count >= 3 {
-            checkIfButtonsAreSet(buttonToAdd: button)
-        }
-        else {
-            removeSelectedButtonsFromUI()
-            removeCardsFromGameBoard()
-        }
+        checkIfSelectedButtonsAreSet()
         selectedButtons.removeAll()
         checkIfNeedToEndGame()
     }
@@ -200,7 +194,7 @@ class ViewController: UIViewController {
         return button.layer.borderColor
     }
     
-    func checkIfButtonsAreSet(buttonToAdd button: UIButton) {
+    func checkIfSelectedButtonsAreSet() -> Bool {
         if selectedButtons.count == 3 {
             let firstCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[0])
             let secondCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[1])
@@ -212,12 +206,20 @@ class ViewController: UIViewController {
                 self.needToDealNewCards = true
                 dealNewCardsButton.isEnabled = true
                 game.scorePlayer += 3
+                if game.deck.count == 0 {
+                    removeSelectedButtonsFromUI()
+                    removeCardsFromGameBoard()
+                    dealNewCardsButton.isEnabled = false
+                }
+                return true
             }
             else {
                 changeButtonsLayoutToNotSet()
                 game.scorePlayer -= 5
+                return false
             }
         }
+        return false
     }
     
     func updateLabelsInUI() {
