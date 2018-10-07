@@ -141,7 +141,7 @@ class ViewController: UIViewController {
         if self.selectedButtons.count == 0 {
             changeButtonsToNotSelected()
         }
-        changeLayoutOnClick(ofButton: button)
+        button.setNewStyle(to: getLayoutOnClick)
         if selectedButtons.contains(button) { // deselect button
             removeButtonFromSelectedButtons(selectedButton: button)
         }
@@ -199,17 +199,8 @@ class ViewController: UIViewController {
         }
     }
         
-    func changeLayoutOnClick(ofButton button: UIButton) {
-        if button.layer.borderColor == UIColor.white.cgColor || button.layer.borderColor == UIColor.orange.cgColor || button.layer.borderColor == UIColor.red.cgColor {
-            button.layer.borderWidth = 3.0
-            button.layer.borderColor = UIColor.blue.cgColor
-            button.layer.cornerRadius = 8.0
-        }
-        else if button.layer.borderColor == UIColor.blue.cgColor {
-            button.layer.borderWidth = 0
-            button.layer.borderColor = UIColor.white.cgColor
-            button.layer.cornerRadius = 0
-        }
+    func getLayoutOnClick(ofButton button: UIButton) -> CGColor? {
+        return button.layer.borderColor
     }
     
     func checkIfButtonsAreSet(buttonToAdd button: UIButton) {
@@ -365,6 +356,21 @@ class ViewController: UIViewController {
             }
         }
         return -1
+    }
+}
+
+extension UIButton {
+    func setNewStyle(to closureRef: (UIButton) -> CGColor?) {
+        if closureRef(self) == UIColor.white.cgColor || self.layer.borderColor == UIColor.orange.cgColor || self.layer.borderColor == UIColor.red.cgColor {
+            self.layer.borderWidth = 3.0
+            self.layer.borderColor = UIColor.blue.cgColor
+            self.layer.cornerRadius = 8.0
+        }
+        else if closureRef(self) == UIColor.blue.cgColor {
+            self.layer.borderWidth = 0
+            self.layer.borderColor = UIColor.white.cgColor
+            self.layer.cornerRadius = 0
+        }
     }
 }
 
