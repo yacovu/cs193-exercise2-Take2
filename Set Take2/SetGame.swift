@@ -125,6 +125,15 @@ class SetGame {
         return setIndexes
     }
     
+    func getCardsOnGameBoard() -> [Card] {
+        var cards = [Card]()
+        
+        for cardIndex in 0..<self.cardsOnGameBoard.count {
+            cards.append(self.cardsOnGameBoard[cardIndex])
+        }
+        return cards
+    }
+    
     func changeCardsToMatched(firstCardIndex firstIndex: Int, secondCardIndex secondIndex: Int, thirdCardIndex thirdIndex: Int) {
         cardsOnGameBoard[firstIndex].isMatched = true
         cardsOnGameBoard[secondIndex].isMatched = true

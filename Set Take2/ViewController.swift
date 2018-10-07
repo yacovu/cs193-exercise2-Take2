@@ -107,8 +107,10 @@ class ViewController: UIViewController {
     
     func initBoard() {
         self.buttons.disableAllElements()
-        for buttonIndex in 0..<game.cardsOnGameBoard.count {
-            connectButtonToCard(cardToConnect: game.cardsOnGameBoard[buttonIndex], buttonToConnect: self.buttons[buttonIndex])
+        let cardsOnGameBoard = game.getCardsOnGameBoard()
+        
+        for cardIndex in 0..<cardsOnGameBoard.count {
+            connectButtonToCard(cardToConnect: cardsOnGameBoard[cardIndex], buttonToConnect: self.buttons[cardIndex])
         }
         for buttonIndex in 0..<game.maxNumOfCards {
             buttons[buttonIndex].layer.borderColor = UIColor.white.cgColor
@@ -194,7 +196,7 @@ class ViewController: UIViewController {
         return button.layer.borderColor
     }
     
-    func checkIfSelectedButtonsAreSet() -> Bool {
+    func checkIfSelectedButtonsAreSet() {
         if selectedButtons.count == 3 {
             let firstCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[0])
             let secondCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[1])
@@ -211,15 +213,12 @@ class ViewController: UIViewController {
                     removeCardsFromGameBoard()
                     dealNewCardsButton.isEnabled = false
                 }
-                return true
             }
             else {
                 changeButtonsLayoutToNotSet()
                 game.scorePlayer -= 5
-                return false
             }
         }
-        return false
     }
     
     func updateLabelsInUI() {
