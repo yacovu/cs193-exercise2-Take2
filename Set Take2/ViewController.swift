@@ -108,19 +108,12 @@ class ViewController: UIViewController {
     }
     
     func initBoard() {
-        disableAllButtons()
+        self.buttons.disableAllElements()
         for buttonIndex in 0..<game.cardsOnGameBoard.count {
             connectButtonToCard(cardToConnect: game.cardsOnGameBoard[buttonIndex], buttonToConnect: self.buttons[buttonIndex])
         }
         for buttonIndex in 0..<game.maxNumOfCards {
             buttons[buttonIndex].layer.borderColor = UIColor.white.cgColor
-        }
-    }
-    
-    func disableAllButtons() {
-        for button in buttons {
-            button.isEnabled = false
-            button.tag = -1
         }
     }
     
@@ -374,3 +367,13 @@ class ViewController: UIViewController {
         return -1
     }
 }
+
+extension Array where Element:UIButton {
+    func disableAllElements() {
+        for element in self {
+            element.isEnabled = false
+            element.tag = -1
+        }
+    }
+}
+
