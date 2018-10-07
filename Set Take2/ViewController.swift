@@ -77,6 +77,12 @@ class ViewController: UIViewController {
     
     lazy var colornameToUIColor = ["red": UIColor.red, "green": UIColor.green, "blue": UIColor.blue]
     
+    enum colorType: Int {
+        case red
+        case green
+        case blue
+    }
+    
     var game = SetGame()
     
     func startNewGame(){
@@ -120,12 +126,13 @@ class ViewController: UIViewController {
     
     func concatenateShapeAccordingToCardProperty(cardToGetShapeFrom card: Card) -> NSAttributedString {
         let shape = self.shapeToFilling[self.shapes[card.shape]]![card.filling].string
+        let colorName = self.colors[colorType(rawValue: card.color)!.rawValue]
         var fixedShape = shape
         
         for _ in 0..<card.numOfShapes {
             fixedShape += shape
         }
-        return NSAttributedString(string: fixedShape, attributes: [NSAttributedStringKey.foregroundColor : self.colornameToUIColor[self.colors[card.color]]!])
+        return NSAttributedString(string: fixedShape, attributes: [NSAttributedStringKey.foregroundColor : self.colornameToUIColor[colorName]!])
     }
     
     func connectButtonToCard(cardToConnect card: Card, buttonToConnect button: UIButton) {
@@ -280,6 +287,9 @@ class ViewController: UIViewController {
                 connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIndexesInGameBoard[index]], buttonToConnect: self.buttons[self.freeButtonIndex])
                 freeButtonIndex += 1
             }
+        }
+        else {
+            self.dealNewCardsButton.isEnabled = false
         }
     }
     
