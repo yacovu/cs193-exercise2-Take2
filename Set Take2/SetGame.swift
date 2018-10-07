@@ -14,7 +14,6 @@ class SetGame {
     private(set) var deck = [Card]()
     var cardsOnGameBoard = [Card]()
     var selectedCards = [Card]()
-    var alreadyMatchedCards = [Card]()
     private let numOfCardsOnStart = 12
     private(set) var maxNumOfCards = 24
     private let numOfShapes = 3
