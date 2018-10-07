@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     
     @IBAction func dealNewCardsClick(_ sender: UIButton) {
         dealNewCards()
-        changeButtonsToNotSelected()
+        changeButtonsLayoutToNotSelected()
     }
     
     @IBAction func hintClick(_ sender: UIButton) {
@@ -137,7 +137,7 @@ class ViewController: UIViewController {
             dealNewCards()
         }
         if self.selectedButtons.count == 0 {
-            changeButtonsToNotSelected()
+            changeButtonsLayoutToNotSelected()
         }
         button.changeLayout(to: getButtonLayoutOnClick)
         if selectedButtons.contains(button) { // deselect button
@@ -207,7 +207,7 @@ class ViewController: UIViewController {
             let thirdCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[2])
             if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
                 dealNewCardsButton.isEnabled = true
-                changeButtonsToLegalSet()
+                changeButtonsLayoutToLegalSet()
                 print("checkIfButtonsAreSet - found new Set: \(firstCardIndex) \(secondCardIndex) \(thirdCardIndex)")
                 game.changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
                 self.needToDealNewCards = true
@@ -215,7 +215,7 @@ class ViewController: UIViewController {
                 game.scorePlayer += 3
             }
             else {
-                changeButtonsToNotSet()
+                changeButtonsLayoutToNotSet()
                 game.scorePlayer -= 5
             }
         }
@@ -275,6 +275,9 @@ class ViewController: UIViewController {
                 connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIndexesInGameBoard[index]], buttonToConnect: self.buttons[self.freeButtonIndex])
                 freeButtonIndex += 1
             }
+            if game.cardsOnGameBoard.count == game.maxNumOfCards {
+                self.dealNewCardsButton.isEnabled = false
+            }
         }
         else {
             self.dealNewCardsButton.isEnabled = false
@@ -290,6 +293,9 @@ class ViewController: UIViewController {
                 }
             }
         }
+        if game.cardsOnGameBoard.count >= game.maxNumOfCards {
+            self.dealNewCardsButton.isEnabled = false
+        }
         self.needToDealNewCards = false
         removeSetFromGameBoard()
     }
@@ -302,6 +308,9 @@ class ViewController: UIViewController {
             let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[1]])
             let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[2]])
             
+            if firstButtonIndex == -1 || secondButtonIndex == -1 || thirdButtonIndex == -1 {
+                print("here")
+            }
             print("setIndexes: \(indexesOfSetCards)")
             print("firstButtonIndex: \(firstButtonIndex)")
             print("secondButtonIndex: \(secondButtonIndex)")
@@ -310,6 +319,10 @@ class ViewController: UIViewController {
             changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
             changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])
         }
+        
+//        if game.cardsOnGameBoard.count >= game.maxNumOfCards {
+//            self.dealNewCardsButton.isEnabled = false
+//        }
     }
     
     func gameOver() {
@@ -325,7 +338,7 @@ class ViewController: UIViewController {
         button.layer.cornerRadius = 8.0
     }
     
-    func changeButtonsToLegalSet() {
+    func changeButtonsLayoutToLegalSet() {
         for button in selectedButtons {
             button.layer.borderWidth = 3.0
             button.layer.borderColor = UIColor.green.cgColor
@@ -333,7 +346,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func changeButtonsToNotSet() {
+    func changeButtonsLayoutToNotSet() {
         for button in selectedButtons {
             button.layer.borderWidth = 3.0
             button.layer.borderColor = UIColor.red.cgColor
@@ -341,7 +354,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func changeButtonsToNotSelected() {
+    func changeButtonsLayoutToNotSelected() {
         for button in buttons {
             button.layer.borderWidth = 0
             button.layer.borderColor = UIColor.white.cgColor
