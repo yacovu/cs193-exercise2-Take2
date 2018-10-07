@@ -24,14 +24,12 @@ class SetGame {
     lazy private var deckCapacity = numOfShapes * numOfColors * numOfFillings * numOfShapesQuantity
     
     func dealThreeNewCards() -> [Card] {
-//        var indexesOfnewCards = [Int]()
         var newCards = [Card]()
         
         for _ in 1...3 {
             let newCard = deck.popLast()!
             self.cardsOnGameBoard.append(newCard)
             newCards.append(newCard)
-//            indexesOfnewCards.append(self.cardsOnGameBoard.count - 1)
         }
         return newCards
     }
@@ -148,6 +146,10 @@ class SetGame {
     
     func needToEndGame() -> Bool {
         return cardsOnGameBoard.count == 0 || (getALegalSet().count == 0 && deck.count == 0)
+    }
+    
+    func getNumOfCardsOnStart() -> Int {
+        return self.numOfCardsOnStart
     }
     
     init() {

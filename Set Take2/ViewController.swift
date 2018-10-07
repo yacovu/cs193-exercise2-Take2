@@ -72,7 +72,7 @@ class ViewController: UIViewController {
     
     @IBAction func buttonClick(_ sender: UIButton) {
         touchButton(touchedButton: sender)
-    }    
+    }
     
     func startNewGame(){
         game = SetGame()
@@ -97,6 +97,10 @@ class ViewController: UIViewController {
     func initBoard() {
         self.buttons.disableAllElements()
         let cardsOnGameBoard = game.getCardsOnGameBoard()
+        
+        if cardsOnGameBoard.count != game.getNumOfCardsOnStart() {
+            assertionFailure("Invalid number of cards on start")
+        }
         
         for cardIndex in 0..<cardsOnGameBoard.count {
             connectButtonToCard(cardToConnect: cardsOnGameBoard[cardIndex], buttonToConnect: self.buttons[cardIndex])
@@ -191,7 +195,6 @@ class ViewController: UIViewController {
             let secondCard = getCardInGameBoard(fromButtonElement: selectedButtons[1])!
             let thirdCard = getCardInGameBoard(fromButtonElement: selectedButtons[2])!
             if game.isASet(firstCard: firstCard, secondCard: secondCard, thirdCard: thirdCard) {
-//                dealNewCardsButton.isEnabled = true
                 changeButtonsLayoutToLegalSet()
                 game.changeCardsToMatched(firstCard: firstCard, secondCard: secondCard, thirdCard: thirdCard)
                 self.needToDealNewCards = true
