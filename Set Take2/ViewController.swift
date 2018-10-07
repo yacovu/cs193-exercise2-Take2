@@ -208,7 +208,6 @@ class ViewController: UIViewController {
             if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
                 dealNewCardsButton.isEnabled = true
                 changeButtonsLayoutToLegalSet()
-                print("checkIfButtonsAreSet - found new Set: \(firstCardIndex) \(secondCardIndex) \(thirdCardIndex)")
                 game.changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
                 self.needToDealNewCards = true
                 dealNewCardsButton.isEnabled = true
@@ -239,18 +238,15 @@ class ViewController: UIViewController {
     }
     
     func dealNewCards() {
-        print("dealNewCards")
         if game.deck.count >= 3 {
             let indexesOfnewCards =  game.dealThreeNewCards()
             let indexesOfMatchedCards = getMatchedButtonsFromMatchedCards()
             
             if indexesOfMatchedCards.count == 3 {
                 let matchedButtonIndexes = getMatchedButtonsFromMatchedCards()
-                print("dealNewCards --> replaceSelectedCards - indexesOfnewCards: \(indexesOfnewCards), matchedCardsIndex: \(matchedButtonIndexes)")
                 replaceSelectedCards(newCardsIndex: indexesOfnewCards, matchedCardsIndex: matchedButtonIndexes)
             }
             else {
-                print("dealNewCards --> dealCardsToNewButtons")
                 dealCardsToNewButtons(newCardsIndex: indexesOfnewCards)
             }
         }
@@ -302,27 +298,15 @@ class ViewController: UIViewController {
     
     func showHintOnGameBoard() {
         var indexesOfSetCards = game.getALegalSet()
-        print("--> showHintOnGameBoard")
         if indexesOfSetCards.count == 3 {
             let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[0]])
             let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[1]])
             let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[indexesOfSetCards[2]])
-            
-            if firstButtonIndex == -1 || secondButtonIndex == -1 || thirdButtonIndex == -1 {
-                print("here")
-            }
-            print("setIndexes: \(indexesOfSetCards)")
-            print("firstButtonIndex: \(firstButtonIndex)")
-            print("secondButtonIndex: \(secondButtonIndex)")
-            print("thirdButtonIndex: \(thirdButtonIndex)")
+
             changeToSetLayout(buttonToChange: self.buttons[firstButtonIndex])
             changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
             changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])
         }
-        
-//        if game.cardsOnGameBoard.count >= game.maxNumOfCards {
-//            self.dealNewCardsButton.isEnabled = false
-//        }
     }
     
     func gameOver() {
