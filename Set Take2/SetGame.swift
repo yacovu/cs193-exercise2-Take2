@@ -24,13 +24,13 @@ class SetGame {
     lazy private var deckCapacity = numOfShapes * numOfColors * numOfFillings * numOfShapesQuantity
     
     func dealThreeNewCards() -> [Int] {
-        var newCardsIndexes = [Int]()
+        var indexesOfnewCards = [Int]()
         
         for _ in 1...3 {
             self.cardsOnGameBoard.append(deck.popLast()!)
-            newCardsIndexes.append(self.cardsOnGameBoard.count - 1) //check if it adds always to the end of the array
+            indexesOfnewCards.append(self.cardsOnGameBoard.count - 1) //check if it adds always to the end of the array
         }
-        return newCardsIndexes
+        return indexesOfnewCards
     }
     
     func initDeck() {

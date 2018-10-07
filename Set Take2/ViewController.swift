@@ -132,13 +132,13 @@ class ViewController: UIViewController {
     }
     
     func touchButton(touchedButton button: UIButton) {
-        if self.needToDealNewCards {
+        if self.needToDealNewCards { // in case a match was found in the previous turn
             dealNewCards()
         }
         if self.selectedButtons.count == 0 {
             changeButtonsToNotSelected()
         }
-        button.setNewStyle(to: getLayoutOnClick)
+        button.changeLayout(to: getButtonLayoutOnClick)
         if selectedButtons.contains(button) { // deselect button
             removeButtonFromSelectedButtons(selectedButton: button)
         }
@@ -196,7 +196,7 @@ class ViewController: UIViewController {
         }
     }
         
-    func getLayoutOnClick(ofButton button: UIButton) -> CGColor? {
+    func getButtonLayoutOnClick(ofButton button: UIButton) -> CGColor? {
         return button.layer.borderColor
     }
     
@@ -206,7 +206,6 @@ class ViewController: UIViewController {
             let secondCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[1])
             let thirdCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[2])
             if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
-                
                 changeButtonsToLegalSet()
                 game.changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
                 self.needToDealNewCards = true
@@ -239,12 +238,14 @@ class ViewController: UIViewController {
     
     func dealNewCards() {
         if game.deck.count >= 3 {
-            let newCardsIndexesInGameBoard =  game.dealThreeNewCards()
-            if getMatchedButtonsFromMatchedCards().count == 3 {
-                replaceSelectedCards(newCardsIndex: newCardsIndexesInGameBoard, matchedCards: getMatchedButtonsFromMatchedCards())
+            let indexesOfnewCards =  game.dealThreeNewCards()
+            let indexesOfMatchedCards = getMatchedButtonsFromMatchedCards()
+            
+            if indexesOfMatchedCards.count == 3 {
+                replaceSelectedCards(newCardsIndex: indexesOfnewCards, newCardsIndex: getMatchedButtonsFromMatchedCards())
             }
             else {
-                dealCardsToNewButtons(newCardsIndex: newCardsIndexesInGameBoard)
+                dealCardsToNewButtons(newCardsIndex: indexesOfnewCards)
             }
         }
         else {
@@ -253,13 +254,13 @@ class ViewController: UIViewController {
     }
     
     func getMatchedButtonsFromMatchedCards() -> [Int] {
-        var matchedCardsIndexes = [Int]()
+        var indexesOfMatchedCards = [Int]()
         for cardIndex in 0..<game.cardsOnGameBoard.count {
             if game.cardsOnGameBoard[cardIndex].isMatched {
-                matchedCardsIndexes.append(cardIndex)
+                indexesOfMatchedCards.append(cardIndex)
             }
         }
-        return matchedCardsIndexes
+        return indexesOfMatchedCards
     }
     
     func dealCardsToNewButtons(newCardsIndex newCardsIndexesInGameBoard: [Int]) {
@@ -274,7 +275,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func replaceSelectedCards(newCardsIndex newCardsIndexesInGameBoard: [Int], matchedCards matchIndexes: [Int]) {
+    func replaceSelectedCards(newCardsIndex newCardsIndexesInGameBoard: [Int], newCardsIndex matchIndexes: [Int]) {
         for cardIndex in 0..<matchIndexes.count {
             for buttonIndex in 0..<self.buttons.count {
                 if self.buttons[buttonIndex].tag == game.cardsOnGameBoard[matchIndexes[cardIndex]].identifier {
@@ -357,7 +358,7 @@ class ViewController: UIViewController {
 }
 
 extension UIButton {
-    func setNewStyle(to closureRef: (UIButton) -> CGColor?) {
+    func changeLayout(to closureRef: (UIButton) -> CGColor?) {
         if closureRef(self) == UIColor.white.cgColor || self.layer.borderColor == UIColor.orange.cgColor || self.layer.borderColor == UIColor.red.cgColor {
             self.layer.borderWidth = 3.0
             self.layer.borderColor = UIColor.blue.cgColor
