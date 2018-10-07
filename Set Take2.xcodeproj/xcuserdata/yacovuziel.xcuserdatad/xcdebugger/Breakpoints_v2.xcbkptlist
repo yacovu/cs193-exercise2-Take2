@@ -10,13 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.708602"
+            timestampString = "560600195.208636"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "208"
             endingLineNumber = "208"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "checkIfButtonsAreSet(buttonToAdd:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -26,13 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.70904"
+            timestampString = "560600195.208987"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "141"
             endingLineNumber = "141"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "touchButton(touchedButton:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -42,13 +42,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.709374"
+            timestampString = "560600195.209216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "139"
             endingLineNumber = "139"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "touchButton(touchedButton:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,13 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.709692"
+            timestampString = "560600195.209452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "331"
+            endingLineNumber = "331"
+            landmarkName = "changeButtonsToLegalSet()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -74,13 +74,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.710017"
+            timestampString = "560600195.2096961"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "314"
-            endingLineNumber = "314"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "317"
+            endingLineNumber = "317"
+            landmarkName = "gameOver()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -90,45 +90,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.710342"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "297"
-            endingLineNumber = "297"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.710662"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.710973"
+            timestampString = "560600195.209998"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "300"
             endingLineNumber = "300"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "showHintOnGameBoard()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -138,13 +106,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.711291"
+            timestampString = "560600195.210314"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "256"
-            endingLineNumber = "256"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "touchButton(touchedButton:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -154,13 +122,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.711614"
+            timestampString = "560600195.210629"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "346"
-            endingLineNumber = "346"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "showHintOnGameBoard()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -170,13 +138,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.711937"
+            timestampString = "560600195.2109441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "dealNewCards()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -186,13 +154,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.712254"
+            timestampString = "560600195.211269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "353"
-            endingLineNumber = "353"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "changeButtonsToNotSelected()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -202,13 +170,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.7126271"
+            timestampString = "560600195.211602"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "351"
+            endingLineNumber = "351"
+            landmarkName = "ViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Set Take2/ViewController.swift"
+            timestampString = "560600195.211906"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
+            landmarkName = "getCardIndexInGameBoardArray(fromButtonElement:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Set Take2/ViewController.swift"
+            timestampString = "560600195.212202"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
             endingLineNumber = "155"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "handleThreeButtonsSelected(touchedButton:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -218,13 +218,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.713063"
+            timestampString = "560600195.2124209"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "32"
             endingLineNumber = "32"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "dealNewCardsClick(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -234,13 +234,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.713403"
+            timestampString = "560600195.212641"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
             endingLineNumber = "183"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "removeSelectedButtonsFromUI()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -250,13 +250,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.713698"
+            timestampString = "560600195.2128659"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
             endingLineNumber = "89"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "startNewGame()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -266,13 +266,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Set Take2/ViewController.swift"
-            timestampString = "560593805.7139651"
+            timestampString = "560600195.213081"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "132"
             endingLineNumber = "132"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "connectButtonToCard(cardToConnect:buttonToConnect:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

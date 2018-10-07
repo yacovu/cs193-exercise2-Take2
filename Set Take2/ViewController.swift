@@ -153,7 +153,6 @@ class ViewController: UIViewController {
     
     func handleThreeButtonsSelected(touchedButton button: UIButton) {
         if game.deck.count >= 3 {
-            dealNewCardsButton.isEnabled = true
             checkIfButtonsAreSet(buttonToAdd: button)
         }
         else {
@@ -206,6 +205,7 @@ class ViewController: UIViewController {
             let secondCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[1])
             let thirdCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[2])
             if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
+                dealNewCardsButton.isEnabled = true
                 changeButtonsToLegalSet()
                 print("checkIfButtonsAreSet - found new Set: \(firstCardIndex) \(secondCardIndex) \(thirdCardIndex)")
                 game.changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
