@@ -23,14 +23,17 @@ class SetGame {
     var scorePlayer = 0
     lazy private var deckCapacity = numOfShapes * numOfColors * numOfFillings * numOfShapesQuantity
     
-    func dealThreeNewCards() -> [Int] {
-        var indexesOfnewCards = [Int]()
+    func dealThreeNewCards() -> [Card] {
+//        var indexesOfnewCards = [Int]()
+        var newCards = [Card]()
         
         for _ in 1...3 {
-            self.cardsOnGameBoard.append(deck.popLast()!)
-            indexesOfnewCards.append(self.cardsOnGameBoard.count - 1) //check if it adds always to the end of the array
+            let newCard = deck.popLast()!
+            self.cardsOnGameBoard.append(newCard)
+            newCards.append(newCard)
+//            indexesOfnewCards.append(self.cardsOnGameBoard.count - 1)
         }
-        return indexesOfnewCards
+        return newCards
     }
     
     func initDeck() {
@@ -100,44 +103,47 @@ class SetGame {
         return firstcard.color != secondcard.color && secondcard.color != thirdcard.color && firstcard.color != thirdcard.color
     }
     
-    func removeCardFromGameBoard(cardIndex index: Int) {
-        self.cardsOnGameBoard.remove(at: index)
+    func removeCardFromGameBoard(cardToBeRemoved card: Card) {
+        var found = false
+        for cardIndex in 0..<self.cardsOnGameBoard.count where !found {
+            if self.cardsOnGameBoard[cardIndex].identifier == card.identifier {
+                self.cardsOnGameBoard.remove(at: cardIndex)
+                found = true
+            }
+        }
     }
     
     func exitGame() {
         exit(0)
     }
     
-    func getALegalSet() -> [Int] {
+    func getALegalSet() -> [Card] {
         var found = false
-        var setIndexes = [Int]()
+        var set = [Card]()
         
-        for firstCardIndex in 0..<cardsOnGameBoard.count where !found {
-            for secondCardIndex in 0..<cardsOnGameBoard.count where !found {
-                for thirdCardIndex in 0..<cardsOnGameBoard.count where !found {
-                    if isASet(firstCard: cardsOnGameBoard[firstCardIndex], secondCard: cardsOnGameBoard[secondCardIndex], thirdCard: cardsOnGameBoard[thirdCardIndex]) {
-                        setIndexes = [firstCardIndex, secondCardIndex, thirdCardIndex]
+        for firstCard in self.cardsOnGameBoard where !found {
+            for secondCard in self.cardsOnGameBoard where !found {
+                for thirdCard in self.cardsOnGameBoard where !found {
+                    if isASet(firstCard: firstCard, secondCard: secondCard, thirdCard: thirdCard) {
+                        set = [firstCard, secondCard, thirdCard]
                         found = true
                     }
                 }
             }
         }
-        return setIndexes
+        return set
     }
     
     func getCardsOnGameBoard() -> [Card] {
-        var cards = [Card]()
-        
-        for cardIndex in 0..<self.cardsOnGameBoard.count {
-            cards.append(self.cardsOnGameBoard[cardIndex])
-        }
-        return cards
+        return self.cardsOnGameBoard
     }
     
-    func changeCardsToMatched(firstCardIndex firstIndex: Int, secondCardIndex secondIndex: Int, thirdCardIndex thirdIndex: Int) {
-        cardsOnGameBoard[firstIndex].isMatched = true
-        cardsOnGameBoard[secondIndex].isMatched = true
-        cardsOnGameBoard[thirdIndex].isMatched = true
+    func changeCardsToMatched(firstCard firstElement: Card, secondCard secondElement: Card, thirdCard thirdElement: Card) {
+        for cardIndex in 0..<self.cardsOnGameBoard.count {
+            if self.cardsOnGameBoard[cardIndex] == firstElement || self.cardsOnGameBoard[cardIndex] == secondElement || self.cardsOnGameBoard[cardIndex] == thirdElement {
+                self.cardsOnGameBoard[cardIndex].isMatched = true
+            }
+        }
     }
     
     func needToEndGame() -> Bool {

@@ -31,4 +31,8 @@ struct Card {
         self.filling = filling
         self.numOfShapes = numOfShapes
     }
+    
+    static func ==(leftElement: Card, rightElement: Card) -> Bool {
+        return leftElement.identifier == rightElement.identifier
+    }
 }
