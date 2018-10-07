@@ -114,6 +114,7 @@ class ViewController: UIViewController {
     func disableAllButtons() {
         for button in buttons {
             button.isEnabled = false
+            button.tag = -1
         }
     }
     
@@ -287,6 +288,7 @@ class ViewController: UIViewController {
             for buttonIndex in 0..<self.buttons.count {
                 if self.buttons[buttonIndex].tag == game.cardsOnGameBoard[matchIndexes[cardIndex]].identifier {
                     connectButtonToCard(cardToConnect: game.cardsOnGameBoard[newCardsIndexesInGameBoard[cardIndex]], buttonToConnect: self.buttons[buttonIndex])
+                    
                 }
             }
         }
@@ -362,4 +364,3 @@ class ViewController: UIViewController {
         return -1
     }
 }
-
