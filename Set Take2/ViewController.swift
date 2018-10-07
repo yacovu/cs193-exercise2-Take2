@@ -9,48 +9,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        initBoard()
-        
-    }
-    
-    @IBOutlet weak var dealNewCardsButton: UIButton!
-    
-    @IBAction func dealNewCardsClick(_ sender: UIButton) {
-        dealNewCards()
-        changeButtonsLayoutToNotSelected()
-    }
-    
-    @IBAction func hintClick(_ sender: UIButton) {
-        selectedButtons.removeAll()
-        showHintOnGameBoard()
-    }
-    
-    @IBAction func newGameClick(_ sender: UIButton) {
-        startNewGame()
-    }
-    
-    @IBOutlet weak var playerScoreLabel: UILabel!
-    
-    @IBOutlet weak var cardsInDeckLabel: UILabel!
-    
-    @IBOutlet var buttons: [UIButton]!
-    
-    @IBAction func buttonClick(_ sender: UIButton) {
-        touchButton(touchedButton: sender)
-    }
     
     private(set) var colors = ["red", "green", "blue"]
     private(set) var shading = ["blank","semiFilled","fullyFilled"]
@@ -62,7 +20,7 @@ class ViewController: UIViewController {
     let blankDiamond = NSAttributedString(string: "\u{25CA}")
     private let blankSquare = NSAttributedString(string: "\u{25A2}")
     private let blankCircle = NSAttributedString(string: "\u{25EF}")
-
+    
     private let semiFilledDiamond = NSAttributedString(string: "\u{25C8}")
     private let semiFilledSquare = NSAttributedString(string: "\u{25A3}")
     private let semiFilledCircle = NSAttributedString(string: "\u{25C9}")
@@ -84,6 +42,37 @@ class ViewController: UIViewController {
     }
     
     var game = SetGame()
+    
+    @IBOutlet weak var dealNewCardsButton: UIButton!
+    
+    @IBOutlet weak var playerScoreLabel: UILabel!
+    
+    @IBOutlet weak var cardsInDeckLabel: UILabel!
+    
+    @IBOutlet var buttons: [UIButton]!
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        initBoard()
+    }
+    
+    @IBAction func dealNewCardsClick(_ sender: UIButton) {
+        dealNewCards()
+        changeButtonsLayoutToNotSelected()
+    }
+    
+    @IBAction func hintClick(_ sender: UIButton) {
+        selectedButtons.removeAll()
+        showHintOnGameBoard()
+    }
+    
+    @IBAction func newGameClick(_ sender: UIButton) {
+        startNewGame()
+    }
+    
+    @IBAction func buttonClick(_ sender: UIButton) {
+        touchButton(touchedButton: sender)
+    }    
     
     func startNewGame(){
         game = SetGame()
