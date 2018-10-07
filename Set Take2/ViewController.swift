@@ -207,6 +207,7 @@ class ViewController: UIViewController {
             let thirdCardIndex = getCardIndexInGameBoardArray(fromButtonElement: selectedButtons[2])
             if game.isASet(firstCard: game.cardsOnGameBoard[firstCardIndex], secondCard: game.cardsOnGameBoard[secondCardIndex], thirdCard: game.cardsOnGameBoard[thirdCardIndex]) {
                 changeButtonsToLegalSet()
+                print("checkIfButtonsAreSet - found new Set: \(firstCardIndex) \(secondCardIndex) \(thirdCardIndex)")
                 game.changeCardsToMatched(firstCardIndex: firstCardIndex, secondCardIndex: secondCardIndex, thirdCardIndex: thirdCardIndex)
                 self.needToDealNewCards = true
                 dealNewCardsButton.isEnabled = true
@@ -237,14 +238,18 @@ class ViewController: UIViewController {
     }
     
     func dealNewCards() {
+        print("dealNewCards")
         if game.deck.count >= 3 {
             let indexesOfnewCards =  game.dealThreeNewCards()
             let indexesOfMatchedCards = getMatchedButtonsFromMatchedCards()
             
             if indexesOfMatchedCards.count == 3 {
-                replaceSelectedCards(newCardsIndex: indexesOfnewCards, newCardsIndex: getMatchedButtonsFromMatchedCards())
+                let matchedButtonIndexes = getMatchedButtonsFromMatchedCards()
+                print("dealNewCards --> replaceSelectedCards - indexesOfnewCards: \(indexesOfnewCards), matchedCardsIndex: \(matchedButtonIndexes)")
+                replaceSelectedCards(newCardsIndex: indexesOfnewCards, matchedCardsIndex: matchedButtonIndexes)
             }
             else {
+                print("dealNewCards --> dealCardsToNewButtons")
                 dealCardsToNewButtons(newCardsIndex: indexesOfnewCards)
             }
         }
@@ -275,7 +280,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func replaceSelectedCards(newCardsIndex newCardsIndexesInGameBoard: [Int], newCardsIndex matchIndexes: [Int]) {
+    func replaceSelectedCards(newCardsIndex newCardsIndexesInGameBoard: [Int], matchedCardsIndex matchIndexes: [Int]) {
         for cardIndex in 0..<matchIndexes.count {
             for buttonIndex in 0..<self.buttons.count {
                 if self.buttons[buttonIndex].tag == game.cardsOnGameBoard[matchIndexes[cardIndex]].identifier {
@@ -290,11 +295,16 @@ class ViewController: UIViewController {
     
     func showHintOnGameBoard() {
         var setIndexes = game.getALegalSet()
-        
+        print("--> showHintOnGameBoard")
         if setIndexes.count == 3 {
             let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[0]])
             let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[1]])
             let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: game.cardsOnGameBoard[setIndexes[2]])
+            
+            print("setIndexes: \(setIndexes)")
+            print("firstButtonIndex: \(firstButtonIndex)")
+            print("secondButtonIndex: \(secondButtonIndex)")
+            print("thirdButtonIndex: \(thirdButtonIndex)")
             changeToSetLayout(buttonToChange: self.buttons[firstButtonIndex])
             changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
             changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])

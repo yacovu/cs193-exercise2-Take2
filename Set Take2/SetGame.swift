@@ -102,6 +102,7 @@ class SetGame {
     }
     
     func removeCardFromGameBoard(cardIndex index: Int) {
+        print("removeCardFromGameBoard - index: \(index)")
         self.cardsOnGameBoard.remove(at: index)
     }
     
