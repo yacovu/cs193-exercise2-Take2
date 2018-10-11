@@ -45,7 +45,13 @@ class ViewController: UIViewController, DynamicLayout {
     
     private var cards = [PlayingCardView]()
     
-    @IBOutlet weak var boardView: UIView!
+    @IBOutlet weak var boardView: UIView! {
+        didSet {
+            let swipe = UISwipeGestureRecognizer(target: self, action: #selector(dealCardDueToSwipeDown))
+            swipe.direction = .down
+            boardView.addGestureRecognizer(swipe)
+        }
+    }
     
     @IBOutlet weak var dealNewCardsButton: UIButton!
     
@@ -83,7 +89,7 @@ class ViewController: UIViewController, DynamicLayout {
 //        touchButton(touchedButton: sender)
 //    }
     
-    func addNewCardsToUI() {
+    @objc func addNewCardsToUI() {
         let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: game.getCardsOnGameBoard().count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
         let cardsOnGameBoard = game.getCardsOnGameBoard()
         for cardIndex in 0..<game.getCardsOnGameBoard().count {
@@ -91,19 +97,18 @@ class ViewController: UIViewController, DynamicLayout {
             let y_coordinates = cardsGrid[cardIndex]!.origin.y
             let cardWidth = cardsGrid[cardIndex]!.size.width
             let cardHight = cardsGrid[cardIndex]!.size.height
-            var newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight)) {
-                didSet {
-//                    let tap = UISwipeGestureRecognizer(target: self, action: #selector(getNextCard))
-                    let tap = UITapGestureRecognizer(target: self, action: #selector(touchCard))
-                    newCardView.addGestureRecognizer(tap)
-                }
-            }
+            var newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight))
             let cardAttributedString = concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: cardsOnGameBoard[cardIndex])
             newCardView.cardLabel.text = cardAttributedString.string
             newCardView.cardLabel.textColor = cardAttributedString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor
             connectViewToCard(cardToConnect: cardsOnGameBoard[cardIndex], viewToConnect: newCardView)
             self.boardView.addSubview(newCardView)
         }
+    }
+    
+    @objc func dealCardDueToSwipeDown() {
+        dealNewCards()
+        addNewCardsToUI()
     }
     
     //TODO
@@ -116,8 +121,8 @@ class ViewController: UIViewController, DynamicLayout {
         
     }
     
-    @objc func touchCard(playingCardView cardView: PlayingCardView) {
-        
+    @objc func touchCard() {
+        print("here")
     }
     
     func startNewGame(){
@@ -270,7 +275,7 @@ class ViewController: UIViewController, DynamicLayout {
         game.removeCardFromGameBoard(cardToBeRemoved: cardsToBeRemoved[2])
     }
     
-    func dealNewCards() {
+    @objc func dealNewCards() {
         if game.deck.count >= 3 {
             let newCards =  game.dealThreeNewCards()
             let matchedCards = getMatchedCards()
