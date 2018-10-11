@@ -51,10 +51,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0w-Se-V41" userLabel="BoardView">
+                                <rect key="frame" x="5" y="98" width="365" height="654.66666666666663"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="bN5-94-UaN" secondAttribute="bottom" id="1Cd-Q2-4FD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="e0w-Se-V41" secondAttribute="trailing" constant="5" id="1un-iC-e7g"/>
+                            <constraint firstItem="e0w-Se-V41" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5" id="36c-JY-CNr"/>
                             <constraint firstItem="jg2-dB-Ihl" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="19" id="37M-qn-cFT"/>
                             <constraint firstItem="WkO-xR-yo8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="19" id="8Ng-Te-sGa"/>
                             <constraint firstItem="slV-ts-IBX" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="19" id="ImC-QR-2SY"/>
@@ -64,12 +70,15 @@
                             <constraint firstItem="slV-ts-IBX" firstAttribute="leading" secondItem="WkO-xR-yo8" secondAttribute="trailing" constant="46" id="boq-fQ-GUc"/>
                             <constraint firstItem="bN5-94-UaN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="jGD-AX-j32"/>
                             <constraint firstItem="WkO-xR-yo8" firstAttribute="leading" secondItem="jg2-dB-Ihl" secondAttribute="trailing" constant="47" id="kki-pM-jBM"/>
+                            <constraint firstItem="MdA-7Z-C0X" firstAttribute="top" secondItem="e0w-Se-V41" secondAttribute="bottom" constant="5" id="mhH-ko-IBn"/>
+                            <constraint firstItem="e0w-Se-V41" firstAttribute="top" secondItem="WkO-xR-yo8" secondAttribute="bottom" constant="5" id="oYh-4w-Mab"/>
                             <constraint firstItem="jg2-dB-Ihl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="qkd-QJ-sc7"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="MdA-7Z-C0X" secondAttribute="trailing" constant="16" id="wwQ-KR-DXW"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="boardView" destination="e0w-Se-V41" id="2cj-Yg-5Ue"/>
                         <outlet property="cardsInDeckLabel" destination="MdA-7Z-C0X" id="laC-KM-D8l"/>
                         <outlet property="dealNewCardsButton" destination="jg2-dB-Ihl" id="L48-c8-6W7"/>
                         <outlet property="playerScoreLabel" destination="bN5-94-UaN" id="yF7-Fh-3Xk"/>

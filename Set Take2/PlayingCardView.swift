@@ -2,13 +2,16 @@
 //  PlayingCardView.swift
 //  Set Take2
 //
-//  Created by Yacov Uziel on 10/10/2018.
+//  Created by Yacov Uziel on 11/10/2018.
 //  Copyright © 2018 Yacov Uziel. All rights reserved.
 //
 
 import UIKit
 
 class PlayingCardView: UIView {
+
+    @IBOutlet var contentView: UIView!
+    @IBOutlet weak var cardLabel: UILabel!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,14 +24,10 @@ class PlayingCardView: UIView {
     }
     
     private func myInit() {
-        Bundle.main.loadNibNamed("PlayingCardLayout", owner: self, options: nil)
+        Bundle.main.loadNibNamed("PlayingCardView", owner: self, options: nil)
         addSubview(contentView)
         contentView.frame = self.bounds
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
-    
-    @IBOutlet weak var contentView: PlayingCardView!
-    
-    @IBOutlet weak var cardLabel: UILabel!
-    
+
 }

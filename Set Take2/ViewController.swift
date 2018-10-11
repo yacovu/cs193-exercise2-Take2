@@ -43,8 +43,11 @@ class ViewController: UIViewController {
     
     var game = SetGame()
     
+    private var cards = [PlayingCardView]()
     
-    @IBOutlet weak var playingCardView: PlayingCardView!
+    @IBOutlet weak var boardView: UIView!
+    
+    //    @IBOutlet weak var playingCardView: PlayingCardView!
     
     @IBOutlet weak var dealNewCardsButton: UIButton!
     
@@ -63,10 +66,6 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         initBoard()
-        
-//        let newButton =  UIButton(frame: CGRect(x: 50, y: 200, width: 30, height: 30))
-//        newButton.backgroundColor = UIColor.blue
-//        self.view.addSubview(newButton)
     }
     
     @IBAction func dealNewCardsClick(_ sender: UIButton) {
@@ -108,7 +107,39 @@ class ViewController: UIViewController {
     }
     
     func initBoard() {
-        self.playingCardView.cardLabel.text = "test"
+
+        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: 4, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
+        
+        let cardsOnGameBoard = game.getCardsOnGameBoard()
+        
+        for cardIndex in 0..<game.getCardsOnGameBoard().count {
+            let x_coordinates = cardsGrid[cardIndex]!.origin.x
+            let y_coordinates = cardsGrid[cardIndex]!.origin.y
+            let cardWidth = cardsGrid[cardIndex]!.size.width
+            let cardHight = cardsGrid[cardIndex]!.size.height
+            let newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight))
+            let cardAttributedString = concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: cardsOnGameBoard[cardIndex])
+            newCardView.cardLabel.text = cardAttributedString.string
+            newCardView.cardLabel.textColor = cardAttributedString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor
+//            print("index: \(cardIndex)")
+//            print("x: \(x_coordinates)")
+//            print("y \(y_coordinates)")
+//            print("cardWidth: \(cardWidth)")
+//            print("cardHight: \(cardHight)")
+            connectViewToCard(cardToConnect: cardsOnGameBoard[cardIndex], viewToConnect: newCardView)
+            self.boardView.addSubview(newCardView)
+        }
+        
+//        for card in game.getCardsOnGameBoard() {
+//            connectViewToCard(cardToConnect: card, viewToConnect: <#T##PlayingCardView#>)
+        
+//            let newButton =  UIButton(frame: CGRect(x: 1, y: 200, width: 30, height: 30))
+//            newButton.backgroundColor = UIColor.blue
+//            self.view.addSubview(newButton)
+            
+            
+//        }
+//        self.playingCardView.cardLabel.text = "test"
 //        self.buttons.disableAllElements()
 //        let cardsOnGameBoard = game.getCardsOnGameBoard()
 //
@@ -139,6 +170,10 @@ class ViewController: UIViewController {
         button.setAttributedTitle(concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: card), for: UIControlState.normal)
         button.tag = card.identifier
         button.isEnabled = true
+    }
+    
+    func connectViewToCard(cardToConnect card: Card, viewToConnect cardView: PlayingCardView) {
+        cardView.cardLabel!.text = concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: card).string
     }
     
     func touchButton(touchedButton button: UIButton) {
