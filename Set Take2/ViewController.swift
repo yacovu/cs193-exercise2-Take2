@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, DynamicLayout {
     
     private(set) var colors = ["red", "green", "blue"]
     private(set) var shading = ["blank","semiFilled","fullyFilled"]
@@ -47,8 +47,6 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var boardView: UIView!
     
-    //    @IBOutlet weak var playingCardView: PlayingCardView!
-    
     @IBOutlet weak var dealNewCardsButton: UIButton!
     
     @IBOutlet weak var playerScoreLabel: UILabel!
@@ -59,8 +57,6 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.playingCardView.cardLabel.text = "test"
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -70,7 +66,8 @@ class ViewController: UIViewController {
     
     @IBAction func dealNewCardsClick(_ sender: UIButton) {
         dealNewCards()
-        changeButtonsLayoutToNotSelected()
+//        changeButtonsLayoutToNotSelected()
+        addNewCardsToUI()
     }
     
     @IBAction func hintClick(_ sender: UIButton) {
@@ -85,6 +82,43 @@ class ViewController: UIViewController {
 //    @IBAction func buttonClick(_ sender: UIButton) {
 //        touchButton(touchedButton: sender)
 //    }
+    
+    func addNewCardsToUI() {
+        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: game.getCardsOnGameBoard().count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
+        let cardsOnGameBoard = game.getCardsOnGameBoard()
+        for cardIndex in 0..<game.getCardsOnGameBoard().count {
+            let x_coordinates = cardsGrid[cardIndex]!.origin.x
+            let y_coordinates = cardsGrid[cardIndex]!.origin.y
+            let cardWidth = cardsGrid[cardIndex]!.size.width
+            let cardHight = cardsGrid[cardIndex]!.size.height
+            var newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight)) {
+                didSet {
+//                    let tap = UISwipeGestureRecognizer(target: self, action: #selector(getNextCard))
+                    let tap = UITapGestureRecognizer(target: self, action: #selector(touchCard))
+                    newCardView.addGestureRecognizer(tap)
+                }
+            }
+            let cardAttributedString = concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: cardsOnGameBoard[cardIndex])
+            newCardView.cardLabel.text = cardAttributedString.string
+            newCardView.cardLabel.textColor = cardAttributedString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor
+            connectViewToCard(cardToConnect: cardsOnGameBoard[cardIndex], viewToConnect: newCardView)
+            self.boardView.addSubview(newCardView)
+        }
+    }
+    
+    //TODO
+    func shuffleGameBoardCards() {
+        
+    }
+    
+    //TODO
+    func reformUp() {
+        
+    }
+    
+    @objc func touchCard(playingCardView cardView: PlayingCardView) {
+        
+    }
     
     func startNewGame(){
         game = SetGame()
@@ -107,52 +141,7 @@ class ViewController: UIViewController {
     }
     
     func initBoard() {
-
-        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: 4, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
-        
-        let cardsOnGameBoard = game.getCardsOnGameBoard()
-        
-        for cardIndex in 0..<game.getCardsOnGameBoard().count {
-            let x_coordinates = cardsGrid[cardIndex]!.origin.x
-            let y_coordinates = cardsGrid[cardIndex]!.origin.y
-            let cardWidth = cardsGrid[cardIndex]!.size.width
-            let cardHight = cardsGrid[cardIndex]!.size.height
-            let newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight))
-            let cardAttributedString = concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: cardsOnGameBoard[cardIndex])
-            newCardView.cardLabel.text = cardAttributedString.string
-            newCardView.cardLabel.textColor = cardAttributedString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor
-//            print("index: \(cardIndex)")
-//            print("x: \(x_coordinates)")
-//            print("y \(y_coordinates)")
-//            print("cardWidth: \(cardWidth)")
-//            print("cardHight: \(cardHight)")
-            connectViewToCard(cardToConnect: cardsOnGameBoard[cardIndex], viewToConnect: newCardView)
-            self.boardView.addSubview(newCardView)
-        }
-        
-//        for card in game.getCardsOnGameBoard() {
-//            connectViewToCard(cardToConnect: card, viewToConnect: <#T##PlayingCardView#>)
-        
-//            let newButton =  UIButton(frame: CGRect(x: 1, y: 200, width: 30, height: 30))
-//            newButton.backgroundColor = UIColor.blue
-//            self.view.addSubview(newButton)
-            
-            
-//        }
-//        self.playingCardView.cardLabel.text = "test"
-//        self.buttons.disableAllElements()
-//        let cardsOnGameBoard = game.getCardsOnGameBoard()
-//
-//        if cardsOnGameBoard.count != game.getNumOfCardsOnStart() {
-//            assertionFailure("Invalid number of cards on start")
-//        }
-//
-//        for cardIndex in 0..<cardsOnGameBoard.count {
-//            connectButtonToCard(cardToConnect: cardsOnGameBoard[cardIndex], buttonToConnect: self.buttons[cardIndex])
-//        }
-//        for buttonIndex in 0..<game.maxNumOfCards {
-//            buttons[buttonIndex].layer.borderColor = UIColor.white.cgColor
-//        }
+        addNewCardsToUI()
     }
     
     func concatenateShapeAccordingToCardProperty(cardToGetShapeFrom card: Card) -> NSAttributedString {
@@ -287,10 +276,10 @@ class ViewController: UIViewController {
             let matchedCards = getMatchedCards()
             
             if matchedCards.count == 3 {
-                replaceSelectedCards(matchedCards: matchedCards, withNewCards: newCards)
+//                replaceSelectedCards(matchedCards: matchedCards, withNewCards: newCards)
             }
             else {
-                dealCardsToNewButtons(newCardsToDeal: newCards)
+//                dealCardsToNewButtons(newCardsToDeal: newCards)
             }
         }
         else {
