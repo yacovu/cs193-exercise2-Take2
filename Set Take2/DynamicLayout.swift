@@ -11,7 +11,7 @@ import Foundation
 protocol DynamicLayout {
     
     //adds 3 new cards to the board so they will fit
-    func addNewCardsToUI()
+    func addNewCardsToGrid()
     
     //changes the location of the cards on the game board randomly
     func shuffleGameBoardCards()
