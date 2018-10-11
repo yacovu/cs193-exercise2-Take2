@@ -50,6 +50,9 @@ class ViewController: UIViewController, DynamicLayout {
             let swipe = UISwipeGestureRecognizer(target: self, action: #selector(addNewCardsToGrid))
             swipe.direction = .down
             boardView.addGestureRecognizer(swipe)
+            
+            let rotation = UIRotationGestureRecognizer(target: self, action: #selector(shuffleGameBoardCards))
+            boardView.addGestureRecognizer(rotation)
         }
     }
     
@@ -88,16 +91,16 @@ class ViewController: UIViewController, DynamicLayout {
     
 //    @IBAction func buttonClick(_ sender: UIButton) {
 //        touchButton(touchedButton: sender)
-//    }   
+//    }
     
     @objc func addNewCardsToGrid() {
         dealNewCards()
         updateGrid()
     }
     
-    //TODO
-    func shuffleGameBoardCards() {
-        
+    @objc func shuffleGameBoardCards() {
+        game.shuffleGameBoard()
+        updateGrid()
     }
     
     //TODO
