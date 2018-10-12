@@ -172,9 +172,6 @@ class ViewController: UIViewController, DynamicLayout {
     }
     
     func handleThreeCardsSelected() {
-//        checkIfSelectedButtonsAreSet()
-//        selectedButtons.removeAll()
-//        checkIfNeedToEndGame()
         checkIfSelectedCardsAreSet()
         self.selectedPlayingCardViews.removeAll()
         checkIfNeedToEndGame()
@@ -216,8 +213,8 @@ class ViewController: UIViewController, DynamicLayout {
     }
     
     func updateGrid() {
-        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: game.getCardsOnGameBoard().count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
         let cardsOnGameBoard = game.getCardsOnGameBoard()
+        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: cardsOnGameBoard.count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
         
         for cardOnGameBoardIndex in 0..<cardsOnGameBoard.count {
             let x_coordinates = cardsGrid[cardOnGameBoardIndex]!.origin.x
@@ -233,6 +230,7 @@ class ViewController: UIViewController, DynamicLayout {
             }
             else {
                 connectViewToCard(cardToConnect: cardsOnGameBoard[cardOnGameBoardIndex], viewToConnect: newCardView)
+                //TOOD: remove views from cardviews after removing them
                 self.cardViews.append(newCardView)
                 newCardView.layer.backgroundColor = UIColor.white.cgColor
             }
@@ -263,43 +261,11 @@ class ViewController: UIViewController, DynamicLayout {
         return NSAttributedString(string: fixedShape, attributes: [NSAttributedStringKey.foregroundColor : self.colornameToUIColor[colorName]!])
     }
     
-    func connectButtonToCard(cardToConnect card: Card, buttonToConnect button: UIButton) {
-        button.setAttributedTitle(concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: card), for: UIControlState.normal)
-        button.tag = card.identifier
-        button.isEnabled = true
-    }
-    
     func connectViewToCard(cardToConnect card: Card, viewToConnect cardView: PlayingCardView) {
         let cardAttributedString = concatenateShapeAccordingToCardProperty(cardToGetShapeFrom: card)
         cardView.cardLabel.text = cardAttributedString.string
         cardView.cardLabel.textColor = cardAttributedString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor
     }
-    
-    func touchButton(touchedButton button: UIButton) {
-//        if self.needToDealNewCards { // in case a match was found in the previous turn
-//            dealNewCards()
-//        }
-//        if self.selectedButtons.count == 0 {
-//            changeButtonsLayoutToNotSelected()
-//        }
-//        button.changeLayout(to: getButtonLayoutOnClick)
-//        if selectedButtons.contains(button) { // deselect button
-//            removeButtonFromSelectedButtons(selectedButton: button)
-//        }
-//        else { // select button
-//            self.selectedButtons.append(button)
-//        }
-//        if selectedButtons.count == 3 {
-//           handleThreeButtonsSelected(touchedButton: button)
-//        }
-//        updateLabelsInUI()
-    }
-    
-//    func handleThreeButtonsSelected(touchedButton button: UIButton) {
-//        checkIfSelectedButtonsAreSet()
-//        selectedButtons.removeAll()
-//        checkIfNeedToEndGame()
-//    }
     
     func checkIfNeedToEndGame() {
         if game.needToEndGame() {
@@ -307,27 +273,11 @@ class ViewController: UIViewController, DynamicLayout {
         }
     }
     
-//    func removeCardsFromGameBoard() {
-//        for button in self.selectedButtons {
-//            game.removeCardFromGameBoard(cardToBeRemoved: getCardInGameBoard(fromButtonElement: button)!)
-//        }
-//    }
-    
     func removeCardsFromGameBoard() {
         for cardView in self.selectedPlayingCardViews {
             game.removeCardFromGameBoard(cardToBeRemoved: getCardInGameBoard(fromCardViewElement: cardView)!)
         }
     }
-    
-//    func removeSelectedButtonsFromUI() {
-//        for button in self.selectedButtons {
-//            button.setAttributedTitle(NSAttributedString(string: ""), for: UIControlState.normal)
-//            button.layer.borderWidth = 0
-//            button.layer.backgroundColor = UIColor.clear.cgColor
-//            button.layer.cornerRadius = 0
-//            button.isEnabled = false
-//        }
-//    }
     
     func removeSelectedCardViewsFromUI() {
         for selectedCardView in self.selectedPlayingCardViews {
@@ -353,30 +303,6 @@ class ViewController: UIViewController, DynamicLayout {
     func getButtonLayoutOnClick(ofButton button: UIButton) -> CGColor? {
         return button.layer.borderColor
     }
-    
-//    func checkIfSelectedButtonsAreSet() {
-//        if selectedButtons.count == 3 {
-//            let firstCard = getCardInGameBoard(fromButtonElement: selectedButtons[0])!
-//            let secondCard = getCardInGameBoard(fromButtonElement: selectedButtons[1])!
-//            let thirdCard = getCardInGameBoard(fromButtonElement: selectedButtons[2])!
-//            if game.isASet(firstCard: firstCard, secondCard: secondCard, thirdCard: thirdCard) {
-//                changeButtonsLayoutToLegalSet()
-//                game.changeCardsToMatched(firstCard: firstCard, secondCard: secondCard, thirdCard: thirdCard)
-//                self.needToDealNewCards = true
-//                dealNewCardsButton.isEnabled = true
-//                game.scorePlayer += 3
-//                if game.deck.count == 0 {
-//                    removeSelectedButtonsFromUI()
-//                    removeCardsFromGameBoard()
-//                    dealNewCardsButton.isEnabled = false
-//                }
-//            }
-//            else {
-//                changeButtonsLayoutToNotSet()
-//                game.scorePlayer -= 5
-//            }
-//        }
-//    }
     
     func checkIfSelectedCardsAreSet() {
         if self.selectedPlayingCardViews.count == 3 {
@@ -427,7 +353,7 @@ class ViewController: UIViewController, DynamicLayout {
             let matchedCards = getMatchedCards()
             
             if matchedCards.count == 3 {
-//                replaceSelectedCards(matchedCards: matchedCards, withNewCards: newCards)
+                replaceSelectedCards(matchedCards: matchedCards, withNewCards: newCards)
             }
             else {
 //                dealCardsToNewButtons(newCardsToDeal: newCards)
@@ -466,18 +392,18 @@ class ViewController: UIViewController, DynamicLayout {
     }
     
     func replaceSelectedCards(matchedCards matched: [Card], withNewCards newCards: [Card]) {
-//        for cardIndex in 0..<matched.count {
-//            for buttonIndex in 0..<self.buttons.count {
-//                if self.buttons[buttonIndex].tag == matched[cardIndex].identifier {
-//                    connectButtonToCard(cardToConnect: newCards[cardIndex], buttonToConnect: self.buttons[buttonIndex])
-//                }
-//            }
-//        }
-//        if game.cardsOnGameBoard.count >= game.maxNumOfCards {
-//            self.dealNewCardsButton.isEnabled = false
-//        }
-//        self.needToDealNewCards = false
-//        removeSetFromGameBoard()
+        for cardIndex in 0..<matched.count {
+            for cardViewIndex in 0..<self.cardViews.count {
+                if self.cardViews[cardViewIndex].tag == matched[cardIndex].identifier {
+                    connectViewToCard(cardToConnect: newCards[cardIndex], viewToConnect: self.cardViews[cardViewIndex])
+                }
+            }
+        }
+        if game.cardsOnGameBoard.count >= game.maxNumOfCards {
+            self.dealNewCardsButton.isEnabled = false
+        }
+        self.needToDealNewCards = false
+        removeSetFromGameBoard()
     }
     
     func showHintOnGameBoard() {
@@ -506,27 +432,11 @@ class ViewController: UIViewController, DynamicLayout {
         button.layer.cornerRadius = 8.0
     }
     
-//    func changeButtonsLayoutToLegalSet() {
-//        for button in selectedButtons {
-//            button.layer.borderWidth = 3.0
-//            button.layer.borderColor = UIColor.green.cgColor
-//            button.layer.cornerRadius = 8.0
-//        }
-//    }
-    
     func changeCardViewsLayoutToLegalSet() {
         for cardView in self.selectedPlayingCardViews {
             cardView.layer.backgroundColor = UIColor.white.cgColor
         }
     }
-    
-//    func changeButtonsLayoutToNotSet() {
-//        for button in selectedButtons {
-//            button.layer.borderWidth = 3.0
-//            button.layer.borderColor = UIColor.red.cgColor
-//            button.layer.cornerRadius = 8.0
-//        }
-//    }
     
     func changeCardViewsLayoutToNotSet() {
         for cardView in self.selectedPlayingCardViews {
