@@ -97,6 +97,17 @@ class ViewController: UIViewController, DynamicLayout {
         updateGrid()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) -> Void in
+            
+            self.updateGrid()
+        }, completion: { (UIViewControllerTransitionCoordinatorContext) -> Void in
+        })
+        
+        super.viewWillTransition(to: size, with: coordinator)
+        
+    }
+    
     @objc func touchCard(sender cardView: UITapGestureRecognizer) {
         
         if self.needToDealNewCards { // in case a match was found in the previous turn
