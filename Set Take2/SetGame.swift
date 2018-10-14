@@ -54,6 +54,14 @@ class SetGame {
         }
     }
     
+    func shuffleGameBoard() {
+        for _ in 1...self.cardsOnGameBoard.count {
+            let firstRandomIndex = Int(arc4random_uniform(UInt32(self.cardsOnGameBoard.count)))
+            let secondRandomIndex = Int(arc4random_uniform(UInt32(self.cardsOnGameBoard.count)))
+            self.cardsOnGameBoard.swapAt(firstRandomIndex, secondRandomIndex)
+        }
+    }
+    
     func initGameBoard () {
         for _ in 1...numOfCardsOnStart {
             cardsOnGameBoard.append(deck.popLast()!)
