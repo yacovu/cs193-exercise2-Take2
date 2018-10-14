@@ -13,10 +13,9 @@ class ViewController: UIViewController, DynamicLayout {
     private(set) var shading = ["blank","semiFilled","fullyFilled"]
     private(set) var numberOfShapes = [1,2,3]
     lazy private(set) var shapes = ["diamond", "square", "circle"]
-    //    private var selectedButtons = [UIButton]()
     private var selectedPlayingCardViews = [PlayingCardView]()
     private var needToDealNewCards = false
-    private var freeButtonIndex = 12
+    
     let blankDiamond = NSAttributedString(string: "\u{25CA}")
     private let blankSquare = NSAttributedString(string: "\u{25A2}")
     private let blankCircle = NSAttributedString(string: "\u{25EF}")
@@ -62,8 +61,6 @@ class ViewController: UIViewController, DynamicLayout {
     
     @IBOutlet weak var cardsInDeckLabel: UILabel!
     
-    //    @IBOutlet var buttons: [UIButton]!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -75,9 +72,6 @@ class ViewController: UIViewController, DynamicLayout {
     
     @IBAction func dealNewCardsClick(_ sender: UIButton) {
         dealNewCards()
-        //        changeButtonsLayoutToNotSelected()
-        //        addNewCardsToUI()
-        //        self.boardView.backgroundColor = UIColor.white
         updateGrid()
         updateLabelsInUI()
     }
@@ -100,11 +94,6 @@ class ViewController: UIViewController, DynamicLayout {
     @objc func shuffleGameBoardCards() {
         game.shuffleGameBoard()
         updateGrid()
-    }
-    
-    //TODO
-    func reformUp() {
-        
     }
     
     @objc func touchCard(sender cardView: UITapGestureRecognizer) {
@@ -147,6 +136,8 @@ class ViewController: UIViewController, DynamicLayout {
     func changeCardsLayoutToNotSelected() {
         for cardView in self.cardViews {
             cardView.contentView.layer.borderColor = UIColor.white.cgColor
+            cardView.contentView.layer.borderWidth = 0
+            cardView.contentView.layer.cornerRadius = 0
         }
     }
     
@@ -292,16 +283,6 @@ class ViewController: UIViewController, DynamicLayout {
         
     }
     
-    //    func removeButtonFromSelectedButtons(selectedButton buttonToRemove: UIButton) {
-    //        var found = false
-    //        for buttonIndex in 0..<self.selectedButtons.count where !found{
-    //            if self.selectedButtons[buttonIndex] == buttonToRemove {
-    //                self.selectedButtons.remove(at: buttonIndex)
-    //                found = true
-    //            }
-    //        }
-    //    }
-    
     func getButtonLayoutOnClick(ofButton button: UIButton) -> CGColor? {
         return button.layer.borderColor
     }
@@ -357,9 +338,6 @@ class ViewController: UIViewController, DynamicLayout {
             if matchedCards.count == 3 {
                 replaceSelectedCards(matchedCards: matchedCards, withNewCards: newCards)
             }
-            else {
-                //                dealCardsToNewButtons(newCardsToDeal: newCards)
-            }
         }
         else {
             self.dealNewCardsButton.isEnabled = false
@@ -376,21 +354,6 @@ class ViewController: UIViewController, DynamicLayout {
             }
         }
         return matchedCards
-    }
-    
-    func dealCardsToNewButtons(newCardsToDeal newCards: [Card]) {
-        //        if freeButtonIndex < 24 {
-        //            for index in 0..<3 {
-        //                connectButtonToCard(cardToConnect: newCards[index], buttonToConnect: self.buttons[self.freeButtonIndex])
-        //                freeButtonIndex += 1
-        //            }
-        //            if game.cardsOnGameBoard.count == game.maxNumOfCards {
-        //                self.dealNewCardsButton.isEnabled = false
-        //            }
-        //        }
-        //        else {
-        //            self.dealNewCardsButton.isEnabled = false
-        //        }
     }
     
     func replaceSelectedCards(matchedCards matched: [Card], withNewCards newCards: [Card]) {
@@ -456,14 +419,6 @@ class ViewController: UIViewController, DynamicLayout {
                 }
             }
         }
-    }
-    
-    func changeButtonsLayoutToNotSelected() {
-        //        for button in buttons {
-        //            button.layer.borderWidth = 0
-        //            button.layer.borderColor = UIColor.white.cgColor
-        //            button.layer.cornerRadius = 0
-        //        }
     }
     
     func getCardInGameBoard(fromCardViewElement cardView: PlayingCardView) -> Card? {
