@@ -89,6 +89,7 @@ class ViewController: UIViewController, DynamicLayout {
     @objc func dealNewCardsAndAddToGrid() {
         dealNewCards()
         updateGrid()
+        updateLabelsInUI()
     }
     
     @objc func shuffleGameBoardCards() {
