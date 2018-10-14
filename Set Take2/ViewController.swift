@@ -213,6 +213,10 @@ class ViewController: UIViewController, DynamicLayout {
         let cardsOnGameBoard = game.getCardsOnGameBoard()
         let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: cardsOnGameBoard.count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
         
+        for subView in self.boardView.subviews {
+            subView.removeFromSuperview()
+        }
+        
         for cardOnGameBoardIndex in 0..<cardsOnGameBoard.count {
             let x_coordinates = cardsGrid[cardOnGameBoardIndex]!.origin.x
             let y_coordinates = cardsGrid[cardOnGameBoardIndex]!.origin.y
