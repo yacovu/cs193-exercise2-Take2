@@ -193,8 +193,7 @@ class ViewController: UIViewController, DynamicLayout {
         needToDealNewCards = false
         self.dealNewCardsButton.isEnabled = true
         initBoard()
-        updateLabelsInUI()
-        
+        updateLabelsInUI()        
     }
     
     func resetCardViews() {
@@ -206,16 +205,20 @@ class ViewController: UIViewController, DynamicLayout {
     }
     
     func initBoard() {
-        updateGrid()
+        initBoardView()
+        initGrid()
     }
     
-    func updateGrid() {
-        let cardsOnGameBoard = game.getCardsOnGameBoard()
-        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: cardsOnGameBoard.count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
-        
+    func initBoardView() {
         for subView in self.boardView.subviews {
             subView.removeFromSuperview()
         }
+    }
+    
+    
+    func initGrid() {
+        let cardsOnGameBoard = game.getCardsOnGameBoard()
+        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: cardsOnGameBoard.count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
         
         for cardOnGameBoardIndex in 0..<cardsOnGameBoard.count {
             let x_coordinates = cardsGrid[cardOnGameBoardIndex]!.origin.x
@@ -223,24 +226,43 @@ class ViewController: UIViewController, DynamicLayout {
             let cardWidth = cardsGrid[cardOnGameBoardIndex]!.size.width
             let cardHight = cardsGrid[cardOnGameBoardIndex]!.size.height
             let newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight))
-            let cardOnCardsViewIndex = cardAlreadyExistsInCardsView(cardsOnGameBoard[cardOnGameBoardIndex])
-            if cardOnCardsViewIndex >= 0 {
-                newCardView.cardLabel.text = self.cardViews[cardOnCardsViewIndex].cardLabel.text
-                newCardView.cardLabel.textColor = self.cardViews[cardOnCardsViewIndex].cardLabel.textColor
-                newCardView.contentView.layer.borderColor = self.cardViews[cardOnCardsViewIndex].contentView.layer.borderColor
-                newCardView.contentView.layer.borderWidth = self.cardViews[cardOnCardsViewIndex].contentView.layer.borderWidth
-                newCardView.contentView.layer.cornerRadius = self.cardViews[cardOnCardsViewIndex].contentView.layer.cornerRadius
-            }
-            else {
-                connectViewToCard(cardToConnect: cardsOnGameBoard[cardOnGameBoardIndex], viewToConnect: newCardView)
-                //TOOD: remove views from cardviews after removing them
-                self.cardViews.append(newCardView)
-                newCardView.contentView.layer.borderColor = UIColor.white.cgColor
-            }
+
+            connectViewToCard(cardToConnect: cardsOnGameBoard[cardOnGameBoardIndex], viewToConnect: newCardView)
+            //TOOD: remove views from cardviews after removing them
+            self.cardViews.append(newCardView)
+            newCardView.contentView.layer.borderColor = UIColor.white.cgColor
+            
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
             newCardView.addGestureRecognizer(tapGesture)
             newCardView.tag = cardsOnGameBoard[cardOnGameBoardIndex].identifier
             self.boardView.addSubview(newCardView)
+        }
+    }
+    
+    func updateGrid() {
+        let cardsOnGameBoard = game.getCardsOnGameBoard()
+        let cardsGrid = Grid(layout: Grid.Layout.dimensions(rowCount: cardsOnGameBoard.count / 3, columnCount: 3), frame: CGRect(origin: CGPoint(x: 0, y: 0), size: self.boardView.frame.size))
+        
+        for cardOnGameBoardIndex in 0..<cardsOnGameBoard.count {
+            let x_coordinates = cardsGrid[cardOnGameBoardIndex]!.origin.x
+            let y_coordinates = cardsGrid[cardOnGameBoardIndex]!.origin.y
+            let cardWidth = cardsGrid[cardOnGameBoardIndex]!.size.width
+            let cardHight = cardsGrid[cardOnGameBoardIndex]!.size.height
+            
+            if cardOnGameBoardIndex < cardsOnGameBoard.count - 3 {
+                self.boardView.subviews[cardOnGameBoardIndex].frame = CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight)
+            }
+            else {
+                let newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight))
+                
+                connectViewToCard(cardToConnect: cardsOnGameBoard[cardOnGameBoardIndex], viewToConnect: newCardView)
+                self.cardViews.append(newCardView)
+                newCardView.contentView.layer.borderColor = UIColor.white.cgColor
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
+                newCardView.addGestureRecognizer(tapGesture)
+                newCardView.tag = cardsOnGameBoard[cardOnGameBoardIndex].identifier
+                self.boardView.addSubview(newCardView)
+            }
         }
     }
     
