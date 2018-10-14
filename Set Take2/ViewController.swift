@@ -187,23 +187,22 @@ class ViewController: UIViewController, DynamicLayout {
     }
     
     func startNewGame(){
-//        game = SetGame()
-//        resetButtons()
-//        selectedButtons.removeAll()
-//        needToDealNewCards = false
-//        self.dealNewCardsButton.isEnabled = true
-//        freeButtonIndex = 12
-//        initBoard()
-//        updateLabelsInUI()
+        game = SetGame()
+        resetCardViews()
+        self.selectedPlayingCardViews.removeAll()
+        needToDealNewCards = false
+        self.dealNewCardsButton.isEnabled = true
+        initBoard()
+        updateLabelsInUI()
+        
     }
     
-    func resetButtons() {
-//        for buttonIndex in 0..<self.buttons.count {
-//            self.buttons[buttonIndex].layer.borderWidth = 0
-//            self.buttons[buttonIndex].setAttributedTitle(NSAttributedString(string: ""), for: UIControlState.normal)
-//            self.buttons[buttonIndex].layer.backgroundColor = UIColor.white.cgColor
-//            self.buttons[buttonIndex].layer.cornerRadius = 0
-//        }
+    func resetCardViews() {
+        for cardView in self.cardViews {
+            cardView.contentView.layer.borderWidth = 0
+            cardView.contentView.layer.borderColor = UIColor.white.cgColor
+            cardView.contentView.layer.cornerRadius = 0
+        }
     }
     
     func initBoard() {
@@ -452,7 +451,7 @@ class ViewController: UIViewController, DynamicLayout {
                     cardView.contentView.layer.borderColor = UIColor.red.cgColor
                     cardView.contentView.layer.cornerRadius = 8.0
                 }
-            }            
+            }
         }
     }
     
