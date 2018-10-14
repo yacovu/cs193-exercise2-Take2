@@ -151,7 +151,7 @@ struct Grid
 
         if cellCount > 0 {
             for _ in 0..<cellCount {
-               cellFrames.append(CGRect(origin: origin, size: cellSize))
+               cellFrames.append(CGRect(origin: origin, size: cellSize).insetBy(dx: 1, dy: 1))
                 origin.x += cellSize.width
                 if round(origin.x) > round(frame.maxX - cellSize.width) {
                     origin.x = frame.origin.x + offset.dx

@@ -29,5 +29,4 @@ class PlayingCardView: UIView {
         contentView.frame = self.bounds
         contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
-
 }

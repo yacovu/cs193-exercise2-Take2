@@ -78,21 +78,20 @@ class ViewController: UIViewController, DynamicLayout {
         dealNewCards()
 //        changeButtonsLayoutToNotSelected()
 //        addNewCardsToUI()
+//        self.boardView.backgroundColor = UIColor.white
          updateGrid()
+        updateLabelsInUI()
     }
     
     @IBAction func hintClick(_ sender: UIButton) {
-//        selectedButtons.removeAll()
-//        showHintOnGameBoard()
+        self.selectedPlayingCardViews.removeAll()
+        showHintOnGameBoard()
+        updateGrid()
     }
     
     @IBAction func newGameClick(_ sender: UIButton) {
         startNewGame()
     }
-    
-//    @IBAction func buttonClick(_ sender: UIButton) {
-//        touchButton(touchedButton: sender)
-//    }
     
     @objc func dealNewCardsAndAddToGrid() {
         dealNewCards()
@@ -120,23 +119,36 @@ class ViewController: UIViewController, DynamicLayout {
         
         changeLayout(ofCard: (cardView.view! as? PlayingCardView)!)
         
-        if selectedPlayingCardViews.contains((cardView.view! as? PlayingCardView)!) { // deselect cards
-            removeCardFromSelectedCards(selecteCard: (cardView.view! as? PlayingCardView)!)
+        //TODO: check why doesn't work
+//        if self.selectedPlayingCardViews.contains((cardView.view! as? PlayingCardView)!) { // deselect cards
+//            removeCardFromSelectedCards(selecteCard: (cardView.view! as? PlayingCardView)!)
+//        }
+        if let viewIndex = containsCardView(selectedCardView: (cardView.view! as? PlayingCardView)!) {
+            self.selectedPlayingCardViews.remove(at: viewIndex)
         }
-        else { // select button
+        else { // select card
             self.selectedPlayingCardViews.append((cardView.view! as? PlayingCardView)!)
         }
         if self.selectedPlayingCardViews.count == 3 {
             handleThreeCardsSelected()
+            updateLabelsInUI()
         }
         updateGrid()
     }
     
-    func changeCardsLayoutToNotSelected() {
-        for card in cardViews {
-            card.layer.backgroundColor = UIColor.white.cgColor
+    func containsCardView(selectedCardView: PlayingCardView) -> Int? {
+        for cardViewIndex in 0..<self.selectedPlayingCardViews.count {
+            if self.selectedPlayingCardViews[cardViewIndex].tag == selectedCardView.tag {
+                return cardViewIndex
+            }
         }
-        
+        return nil
+    }
+    
+    func changeCardsLayoutToNotSelected() {
+        for cardView in self.cardViews {
+            cardView.contentView.layer.borderColor = UIColor.white.cgColor
+        }
     }
     
     func removeCardFromSelectedCards(selecteCard card: PlayingCardView) {
@@ -151,21 +163,18 @@ class ViewController: UIViewController, DynamicLayout {
     }
     
     func changeLayout(ofCard card : PlayingCardView) {
-        for cardViewIndex in 0..<self.cardViews.count {
-            if self.cardViews[cardViewIndex].tag == card.tag {
-//                let label = self.cardViews[cardViewIndex].cardLabel.text!
-//                if label != "5" {
-//                    self.cardViews[cardViewIndex].cardLabel.text! = "5"
-//                }
-//                else {
-//                    self.cardViews[cardViewIndex].cardLabel.text! = "3"
-//                }
-                let backColor = self.cardViews[cardViewIndex].layer.backgroundColor!
-                if backColor == UIColor.white.cgColor {
-                    self.cardViews[cardViewIndex].layer.backgroundColor! = UIColor.blue.cgColor
+        for cardView in self.cardViews {
+            if cardView.tag == card.tag {
+                let borderColor = cardView.contentView.layer.borderColor
+                if borderColor == UIColor.white.cgColor || borderColor == UIColor.orange.cgColor || borderColor == UIColor.red.cgColor {
+                    cardView.contentView.layer.borderWidth = 3.0
+                    cardView.contentView.layer.borderColor = UIColor.blue.cgColor
+                    cardView.contentView.layer.cornerRadius = 8.0
                 }
-                else {
-                    self.cardViews[cardViewIndex].layer.backgroundColor! = UIColor.white.cgColor
+                else if borderColor == UIColor.blue.cgColor {
+                    cardView.contentView.layer.borderWidth = 0
+                    cardView.contentView.layer.borderColor = UIColor.white.cgColor
+                    cardView.contentView.layer.cornerRadius = 0
                 }
             }
         }
@@ -175,17 +184,6 @@ class ViewController: UIViewController, DynamicLayout {
         checkIfSelectedCardsAreSet()
         self.selectedPlayingCardViews.removeAll()
         checkIfNeedToEndGame()
-    }
-    
-    func UpdateCardsUI() {
-//        cardsGrid.frame.insetBy
-        for cardViewIndex in 0..<self.cardViews.count {
-//            let newCardView = PlayingCardView(frame: CGRect(x: x_coordinates, y: y_coordinates, width: cardWidth, height: cardHight))
-            let newCardView = self.cardViews[cardViewIndex]
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
-            newCardView.addGestureRecognizer(tapGesture)
-            self.boardView.addSubview(newCardView)
-        }
     }
     
     func startNewGame(){
@@ -226,13 +224,15 @@ class ViewController: UIViewController, DynamicLayout {
             if cardOnCardsViewIndex >= 0 {
                 newCardView.cardLabel.text = self.cardViews[cardOnCardsViewIndex].cardLabel.text
                 newCardView.cardLabel.textColor = self.cardViews[cardOnCardsViewIndex].cardLabel.textColor
-                newCardView.layer.backgroundColor = self.cardViews[cardOnCardsViewIndex].layer.backgroundColor
+                newCardView.contentView.layer.borderColor = self.cardViews[cardOnCardsViewIndex].contentView.layer.borderColor
+                newCardView.contentView.layer.borderWidth = self.cardViews[cardOnCardsViewIndex].contentView.layer.borderWidth
+                newCardView.contentView.layer.cornerRadius = self.cardViews[cardOnCardsViewIndex].contentView.layer.cornerRadius
             }
             else {
                 connectViewToCard(cardToConnect: cardsOnGameBoard[cardOnGameBoardIndex], viewToConnect: newCardView)
                 //TOOD: remove views from cardviews after removing them
                 self.cardViews.append(newCardView)
-                newCardView.layer.backgroundColor = UIColor.white.cgColor
+                newCardView.contentView.layer.borderColor = UIColor.white.cgColor
             }
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(sender:)))
             newCardView.addGestureRecognizer(tapGesture)
@@ -407,16 +407,15 @@ class ViewController: UIViewController, DynamicLayout {
     }
     
     func showHintOnGameBoard() {
-//        var legalSetCards = game.getALegalSet()
-//        if legalSetCards.count == 3 {
-//            let firstButtonIndex = getButtonIndexInButtonsArray(fromCardElement: legalSetCards[0])
-//            let secondButtonIndex = getButtonIndexInButtonsArray(fromCardElement: legalSetCards[1])
-//            let thirdButtonIndex = getButtonIndexInButtonsArray(fromCardElement: legalSetCards[2])
-//
-//            changeToSetLayout(buttonToChange: self.buttons[firstButtonIndex])
-//            changeToSetLayout(buttonToChange: self.buttons[secondButtonIndex])
-//            changeToSetLayout(buttonToChange: self.buttons[thirdButtonIndex])
-//        }
+        var legalSetCards = game.getALegalSet()
+        if legalSetCards.count == 3 {
+            let firstCardViewIndex = getCardViewIndexInCardsArray(fromCardElement: legalSetCards[0])
+            let secondCardViewIndex = getCardViewIndexInCardsArray(fromCardElement: legalSetCards[1])
+            let thirdCardViewIndex = getCardViewIndexInCardsArray(fromCardElement: legalSetCards[2])
+            changeToSetLayout(cardViewToChange: self.cardViews[firstCardViewIndex])
+            changeToSetLayout(cardViewToChange: self.cardViews[secondCardViewIndex])
+            changeToSetLayout(cardViewToChange: self.cardViews[thirdCardViewIndex])
+        }
     }
     
     func gameOver() {
@@ -425,22 +424,35 @@ class ViewController: UIViewController, DynamicLayout {
         alert.addAction(UIAlertAction(title: "New Game", style: UIAlertActionStyle.default, handler: {action in self.startNewGame()}))
         self.present(alert, animated: true, completion: nil)
     }
-    
-    func changeToSetLayout(buttonToChange button: UIButton) {
-        button.layer.borderWidth = 3.0
-        button.layer.borderColor = UIColor.orange.cgColor
-        button.layer.cornerRadius = 8.0
+        
+    func changeToSetLayout(cardViewToChange cardView: PlayingCardView) {
+        cardView.contentView.layer.borderWidth = 3.0
+        cardView.contentView.layer.borderColor = UIColor.orange.cgColor
+        cardView.contentView.layer.cornerRadius = 8.0
     }
     
     func changeCardViewsLayoutToLegalSet() {
-        for cardView in self.selectedPlayingCardViews {
-            cardView.layer.backgroundColor = UIColor.white.cgColor
+        for selectedCard in self.selectedPlayingCardViews {
+            for cardView in self.cardViews {
+                if cardView.tag == selectedCard.tag {
+                    cardView.contentView.layer.borderWidth = 3.0
+                    cardView.contentView.layer.borderColor = UIColor.green.cgColor
+                    cardView.contentView.layer.cornerRadius = 8.0
+                }
+            }
         }
+//        updateGrid()
     }
     
     func changeCardViewsLayoutToNotSet() {
-        for cardView in self.selectedPlayingCardViews {
-            cardView.layer.backgroundColor = UIColor.red.cgColor
+        for selectedCard in self.selectedPlayingCardViews {
+            for cardView in self.cardViews {
+                if cardView.tag == selectedCard.tag {
+                    cardView.contentView.layer.borderWidth = 3.0
+                    cardView.contentView.layer.borderColor = UIColor.red.cgColor
+                    cardView.contentView.layer.cornerRadius = 8.0
+                }
+            }            
         }
     }
     
@@ -463,12 +475,12 @@ class ViewController: UIViewController, DynamicLayout {
         return nil
     }
     
-    func getButtonIndexInButtonsArray(fromCardElement card: Card) -> Int {
-//        for buttonIndex in 0..<self.buttons.count {
-//            if self.buttons[buttonIndex].tag == card.identifier {
-//                return buttonIndex
-//            }
-//        }
+    func getCardViewIndexInCardsArray(fromCardElement card: Card) -> Int {
+        for cardViewIndex in 0..<self.cardViews.count {
+            if self.cardViews[cardViewIndex].tag == card.identifier {
+                return cardViewIndex
+            }
+        }
         return -1
     }
 }
