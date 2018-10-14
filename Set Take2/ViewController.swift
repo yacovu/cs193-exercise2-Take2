@@ -119,10 +119,6 @@ class ViewController: UIViewController, DynamicLayout {
         
         changeLayout(ofCard: (cardView.view! as? PlayingCardView)!)
         
-        //TODO: check why doesn't work
-        //        if self.selectedPlayingCardViews.contains((cardView.view! as? PlayingCardView)!) { // deselect cards
-        //            removeCardFromSelectedCards(selecteCard: (cardView.view! as? PlayingCardView)!)
-        //        }
         if let viewIndex = containsCardView(selectedCardView: (cardView.view! as? PlayingCardView)!) {
             self.selectedPlayingCardViews.remove(at: viewIndex)
         }
@@ -192,11 +188,11 @@ class ViewController: UIViewController, DynamicLayout {
         game = SetGame()
         resetCardViews()
         self.selectedPlayingCardViews.removeAll()
+        self.cardViews.removeAll()
         needToDealNewCards = false
         self.dealNewCardsButton.isEnabled = true
         initBoard()
         updateLabelsInUI()
-        
     }
     
     func resetCardViews() {
@@ -235,7 +231,6 @@ class ViewController: UIViewController, DynamicLayout {
             }
             else {
                 connectViewToCard(cardToConnect: cardsOnGameBoard[cardOnGameBoardIndex], viewToConnect: newCardView)
-                //TOOD: remove views from cardviews after removing them
                 self.cardViews.append(newCardView)
                 newCardView.contentView.layer.borderColor = UIColor.white.cgColor
             }
@@ -280,7 +275,18 @@ class ViewController: UIViewController, DynamicLayout {
     
     func removeCardsFromGameBoard() {
         for cardView in self.selectedPlayingCardViews {
+            removeCardFromCardViews(cardToBeRemoved: getCardInGameBoard(fromCardViewElement: cardView)!)
             game.removeCardFromGameBoard(cardToBeRemoved: getCardInGameBoard(fromCardViewElement: cardView)!)
+        }
+    }
+    
+    func removeCardFromCardViews(cardToBeRemoved card: Card) {
+        var found = false
+        for cardViewIndex in 0..<self.cardViews.count where !found {
+            if self.cardViews[cardViewIndex].tag == card.identifier {
+                self.cardViews.remove(at: cardViewIndex)
+                found = true
+            }
         }
     }
     
@@ -376,6 +382,9 @@ class ViewController: UIViewController, DynamicLayout {
                 }
             }
         }
+        removeCardFromCardViews(cardToBeRemoved: matched[0])
+        removeCardFromCardViews(cardToBeRemoved: matched[1])
+        removeCardFromCardViews(cardToBeRemoved: matched[2])
         if game.cardsOnGameBoard.count >= game.maxNumOfCards {
             self.dealNewCardsButton.isEnabled = false
         }
@@ -418,7 +427,6 @@ class ViewController: UIViewController, DynamicLayout {
                 }
             }
         }
-        //        updateGrid()
     }
     
     func changeCardViewsLayoutToNotSet() {
